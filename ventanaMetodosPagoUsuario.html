@@ -1,0 +1,53 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Metodo de Pago</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/barra.css">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card">
+                    <h1 class="text-center color white p-3">Agregar Metodo de Pago</h1>
+                    <div class="card-body">
+                        <form action="metodosPagoUsuario.html" method="POST">
+                            <div class="form-group mb-3">
+                                <label for="nombreTitular" class="form-label">Nombre del titular</label>
+                                <input type="text" class="form-control ancho-input-2" id="nombreTitular" name="nombreTitular" placeholder="Ingresa el nombre del titular" required onkeypress="permitirSoloLetras(event)">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="numeroTarjeta" class="form-label">Numero de tarjeta</label>
+                                <input type="text" class="form-control ancho-input-2" id="numeroTarjeta" name="numeroTarjeta" placeholder="1234 5678 9012 3456" minlength="13" maxlength="18" required onkeypress="permitirSoloNumeros(event)">
+                            </div>
+                            <div class="fila-flex mb-3">
+                                <div class="form-group">
+                                    <label for="fechaExpiracion" class="form-label">Fecha de expiracion</label>
+                                    <input type="month" class="form-control ancho-input-2" id="fechaExpiracion" name="fechaExpiracion" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="cvv" class="form-label">CVV</label>
+                                    <input type="text" class="form-control ancho-input-2" id="cvv" name="cvv" placeholder="123" minlength="3" maxlength="3" required onkeypress="permitirSoloNumeros(event)">
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <a href="metodosPagoUsuario.html" class="btn btn-secondary">Regresar</a>
+                                <button type="submit" class="btn color white">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="scripts/utileria.js"></script>
+
+
+
+</html>
