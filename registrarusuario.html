@@ -14,28 +14,31 @@
                 <div class="card">
                     <h1 class="text-succes text-center">Registrarse</h1>
                     <div class="card-body">
-                        <form id="registro" action="POST">
+                        <form id="registro" action="login.html">
                             <div class="form-group">
                                 <label for="username">Nombre de usuario</label>
                                 <input type="text" class="form-control" id="username" aria-describedby="userHelp" placholder="Ingresa tu nombre de usuario">
                             </div>
                             <div class="form-group">
                                 <label for="paterno">Apellido Paterno</label>
-                                <input type="text" class="form-control" id="paterno" placholder="Ingresa tu apellido paterno">
+                                <input type="text" class="form-control" id="paterno" placholder="Ingresa tu apellido paterno" onkeypress="permitirSoloLetras(event)">
                             </div>
                             <div class="form-group">
                                 <label for="materno">Apellido Materno</label>
-                                <input type="text" class="form-control" id="materno" placholder="Ingresa tu apellido materno">
+                                <input type="text" class="form-control" id="materno" placholder="Ingresa tu apellido materno" onkeypress="permitirSoloLetras(event)">
                             </div>
                             <div class="form-group">
                                 <label for="nombre">Nombre(s)</label>
-                                <input type="text" class="form-control" id="nombre" placholder="Ingresa tu nombre">
+                                <input type="text" class="form-control" id="nombre" placholder="Ingresa tu nombre" onkeypress="permitirSoloLetras(event)">
                             </div>
                             <div class="form-group">
                                 <label for="correo">Correo Electronico</label>
                                 <input type="email" class="form-control" id="correo" placholder="Ingresa tu correo">
                             </div>
-                            
+                            <div class="form-group">
+                                <label for="confirmContra">Contraseña</label>
+                                <input type="password" class="form-control" id="confirmContra">
+                            </div>
                             <div class="form-group">
                                 <label for="confirmContra">Confirmar contraseña</label>
                                 <input type="password" class="form-control" id="confirmContra">
@@ -69,5 +72,6 @@
             </div>
         </div>
     </div>
+    <script src="scripts/utileria.js"></script>
 </body>
 </html>
