@@ -9,3 +9,13 @@
 .ancho-input {
     width: 500px;
 }
+
+
+.fila-flex {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+.ancho-input-2 {
+    flex: 1; /* Se ajustan al tamaño disponible */
+}
