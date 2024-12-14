@@ -120,9 +120,7 @@ create table citas(idCita int primary key auto_increment,
 create table atencionQueja(idAtencionQueja int primary key auto_increment,
                             idQueja int not null,
                             comentarios varchar(1000) not null,
-                            idCita int,
                             foreign key(idQueja) references queja(idQueja) on delete restrict on update cascade,
-                            foreign key(idCita) references citas(idCita) on delete restrict on update cascade,
                             createdAt TIMESTAMP default CURRENT_TIMESTAMP,
                             updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
 
