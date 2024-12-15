@@ -20,3 +20,14 @@
     flex: 1;
 }
 
+.btn-link {
+    text-decoration: none;
+    color: #1cadab;
+    font-weight: 500;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+    color: rgb(16, 67, 143);
+}
+
