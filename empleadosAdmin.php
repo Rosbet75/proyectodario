@@ -1,5 +1,5 @@
 <?php
-$cnn = mysqli_connect("localhost", "root", "Vawnari1", "eneto");
+$cnn = mysqli_connect("localhost", "root", "eneto", "eneto");
 
 if (!$cnn) {
     die("Conexión fallida: " . mysqli_connect_error());
