@@ -1,34 +1,36 @@
 <?php
-$cnn = mysqli_connect("localhost", "root", "Vawnari1", "eneto");
+$cnn = mysqli_connect("localhost", "root", "eneto", "eneto");
 
 if (!$cnn) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
-$curp = $_POST['curp'];
-$apellidoPaterno = $_POST['apellidoPaterno'];
-$apellidoMaterno = $_POST['apellidoMaterno'];
-$nombre = $_POST['nombre'];
-$idCargo = $_POST['idCargo'];
-$horarioEntrada = $_POST['horarioEntrada'];
-$horarioSalida = $_POST['horarioSalida'];
+if (isset($_POST['curp']) && isset($_POST['apellidoPaterno']) && isset($_POST['apellidoMaterno']) && isset($_POST['nombre']) && isset($_POST['idCargo']) && isset($_POST['horarioEntrada']) && isset($_POST['horarioSalida'])) {
+    $curp = $_POST['curp'];
+    $apellidoPaterno = $_POST['apellidoPaterno'];
+    $apellidoMaterno = $_POST['apellidoMaterno'];
+    $nombre = $_POST['nombre'];
+    $idCargo = $_POST['idCargo'];
+    $horarioEntrada = $_POST['horarioEntrada'];
+    $horarioSalida = $_POST['horarioSalida'];
 
-if (empty($curp) || empty($apellidoPaterno) || empty($apellidoMaterno) || empty($nombre) || empty($idCargo) || empty($horarioEntrada) || empty($horarioSalida)) {
-    echo "Todos los campos son obligatorios";
-} else {
-    $checkCurp = "SELECT * FROM empleados WHERE curp = '$curp'";
-    $resultCheck = mysqli_query($cnn, $checkCurp);
-
-    if (mysqli_num_rows($resultCheck) > 0) {
-        echo "<div class='alert alert-warning mt-4'>El CURP ya esta registrado.</div>";
+    if (empty($curp) || empty($apellidoPaterno) || empty($apellidoMaterno) || empty($nombre) || empty($idCargo) || empty($horarioEntrada) || empty($horarioSalida)) {
+        echo "Todos los campos son obligatorios";
     } else {
-        $sql = "INSERT INTO empleados (curp, apellidoPaterno, apellidoMaterno, nombre, idCargo, horarioEntrada, horarioSalida, createdAt, updatedAt)
-                VALUES ('$curp', '$apellidoPaterno', '$apellidoMaterno', '$nombre', '$idCargo', '$horarioEntrada', '$horarioSalida', NOW(), NOW())";
+        $checkCurp = "SELECT * FROM empleados WHERE curp = '$curp'";
+        $resultCheck = mysqli_query($cnn, $checkCurp);
 
-        if (mysqli_query($cnn, $sql)) {
-            echo "<div class='alert alert-success mt-4'>Empleado registrado con éxito</div>";
+        if (mysqli_num_rows($resultCheck) > 0) {
+            echo "<div class='alert alert-warning mt-4'>El CURP ya esta registrado.</div>";
         } else {
-            echo "<div class='alert alert-danger mt-4'>Error: ".$sql."<br>" . mysqli_error($cnn) . "</div>";
+            $sql = "INSERT INTO empleados (curp, apellidoPaterno, apellidoMaterno, nombre, idCargo, horarioEntrada, horarioSalida, createdAt, updatedAt)
+                    VALUES ('$curp', '$apellidoPaterno', '$apellidoMaterno', '$nombre', '$idCargo', '$horarioEntrada', '$horarioSalida', NOW(), NOW())";
+
+            if (mysqli_query($cnn, $sql)) {
+                echo "<div class='alert alert-success mt-4'>Empleado registrado con exito</div>";
+            } else {
+                echo "<div class='alert alert-danger mt-4'>Error: ".$sql."<br>" . mysqli_error($cnn) . "</div>";
+            }
         }
     }
 }
@@ -66,7 +68,7 @@ if (!$result) {
                         Admins
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="administradorAdmin.php">Crear Usuario Administrador</a>
+                        <a class="dropdown-item" href="administradorAdmin.html">Crear Usuario Administrador</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="editareliminarAdministrador.html">Editar/Eliminar Usuario Administrador</a>
                     </div>
@@ -76,7 +78,7 @@ if (!$result) {
                         Empleados
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="empleadosAdmin.html">Registrar Empleado</a>
+                        <a class="dropdown-item" href="empleadosAdmin.php">Registrar Empleado</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="editareliminarEmpleado.html">Editar/Eliminar Empleado</a>
                     </div>
@@ -112,7 +114,7 @@ if (!$result) {
                 <br>
                 <h1 class="text-success text-center">Registrar Empleado</h1>
                 <div class="card-body">
-                    <form id="registroEmpleado" action="empleadosAdmin.php" method="POST" onsubmit="return validarHora()">
+                    <form id="registroEmpleado" action="empleadosAdmin.php" method="POST">
                         <div class="form-group">
                             <label for="curp">CURP</label>
                             <input type="text" class="form-control" id="curp" name="curp" minlength="18" maxlength="18" placeholder="Ingresa tu CURP" required>
