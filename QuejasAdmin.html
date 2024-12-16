@@ -151,7 +151,8 @@
               <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalCita">
                   Citar
-                </button>                <button class="btn btn-primary btn-danger ms-2">Sancionar</button>
+                </button>                
+                <button class="btn btn-primary btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#modalSancion">Sancionar</button>
                 <button class="btn btn-primary btn-success ms-2">Marcar como atendido</button>
               </div>
             </div>
@@ -321,5 +322,31 @@
       </div>
     </div>
 
+    <div class="modal fade" id="modalSancion" tabindex="-1" aria-labelledby="modalSancionLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalSancionLabel">Sancionar</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formSancion">
+              <div class="row mb-3">
+               
+                <div class="col-md-15 ">
+                  <label for="sancion" class="form-label">Concepto</label>
+                  <input type="text" class="form-control ancho-input-2" id="sancion" required maxlength="100">
+                </div>
+              </div>
+    
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" form="formSancion" class="btn color white">Guardar Sanción</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 </html>
