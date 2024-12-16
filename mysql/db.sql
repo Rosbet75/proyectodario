@@ -126,3 +126,29 @@ create table atencionQueja(idAtencionQueja int primary key auto_increment,
                             createdAt TIMESTAMP default CURRENT_TIMESTAMP,
                             updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
 
+
+
+INSERT INTO empleados (curp, apellidoPaterno, apellidoMaterno, nombre, idCargo, horarioEntrada, horarioSalida) 
+VALUES 
+('CURP12345678901234', 'Gomez', 'Perez', 'Juan', 1, '08:00:00', '17:00:00'),
+('CURP23456789012345', 'Lopez', 'Martinez', 'Maria', 2, '09:00:00', '18:00:00'),
+('CURP34567890123456', 'Sanchez', 'Hernandez', 'Pedro', 3, '08:30:00', '17:30:00'),
+('CURP45678901234567', 'Rodriguez', 'Garcia', 'Ana', 1, '07:45:00', '16:45:00'),
+('CURP56789012345678', 'Torres', 'Vargas', 'Carlos', 2, '08:15:00', '17:15:00');
+
+
+INSERT INTO empleados (curp, apellidoPaterno, apellidoMaterno, nombre, idCargo, horarioEntrada, horarioSalida)
+VALUES
+('ABC123456789012345', 'Pérez', 'González', 'Juan', 1, '08:00:00', '17:00:00'),
+('XYZ987654321012345', 'López', 'Martínez', 'Ana', 2, '09:00:00', '18:00:00'),
+('LMN654321098765432', 'Hernández', 'Ruiz', 'Carlos', 1, '08:30:00', '17:30:00'),
+('OPQ432109876543210', 'Díaz', 'Rodríguez', 'María', 3, '07:45:00', '16:45:00'),
+('RST321987654321098', 'Vargas', 'Sánchez', 'Luis', 2, '09:30:00', '18:30:00');
+
+INSERT INTO choferes (curp, num_licencia)
+VALUES
+('ABC123456789012345', 'LIC123456789'),
+('XYZ987654321012345', 'LIC987654321'),
+('LMN654321098765432', 'LIC654321098'),
+('OPQ432109876543210', 'LIC432109876'),
+('RST321987654321098', 'LIC321987654');

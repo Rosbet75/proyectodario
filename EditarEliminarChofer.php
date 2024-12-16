@@ -3,7 +3,41 @@ $cnn = new mysqli("localhost", "root", "eneto", "eneto");
 $quejas = isset($_GET['quejas']) ? $_GET['quejas'] : '1';
 $viajes = isset($_GET['viajes']) ? $_GET['viajes'] : '1';
 
-
+$consul = $cnn -> query("select * from choferes");
+$tablas = "";
+while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
+ $tablas .= "<br>
+            <div class='container-fluid'>
+  <div class='container mt-9'>
+    <div class='column justify-content-center'>
+      <div class='col-lg-12'>
+        <div class='card'>
+          <div class='card-body'>
+            <div class='form-group'>
+              <label for=''>ID: {$ren['idChofer']}</label>
+            </div>
+            <div class='form-group'>
+              <label for=''>CURP: {$ren['curp']}</label>
+            </div>
+            <div class='form-group'>
+              <label for=''>Numero de Licencia: {$ren['num_licencia']}</label>
+            </div>
+            <div class='d-flex justify-content-end'>
+              <button type='button' class='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalActualizar'>
+                Actualizar
+              </button>
+              <button type='button' class='btn btn-danger ms-2' data-bs-toggle='modal' data-bs-target='#modalEliminar'>
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+";
+};
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -126,10 +160,6 @@ $viajes = isset($_GET['viajes']) ? $_GET['viajes'] : '1';
         </div>
     </div>
 
-    <br>
-    <p>test: <?php echo $quejas?></p>
-    <br>
-
     <div class="container-fluid">
       <div class="container mt-9">
         <div class="column justify-content-center">
@@ -214,6 +244,7 @@ $viajes = isset($_GET['viajes']) ? $_GET['viajes'] : '1';
         </div>
       </div>
     </div>
-
+    
+    <?php echo $tablas; ?>
 </body>
 </html>
