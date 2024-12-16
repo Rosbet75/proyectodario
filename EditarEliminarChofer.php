@@ -1,3 +1,12 @@
+<?php
+$cnn = new mysqli("localhost", "root", "eneto", "eneto");
+if(isset($_GET['orden'])) {
+    
+} else {
+
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
