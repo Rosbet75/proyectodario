@@ -36,3 +36,15 @@ function verificarContrasenas() {
         mensajeError.style.color = '#dc3545';
     }
 }
+
+function validarHora() {
+    const horaEntrada = document.getElementById("horarioEntrada").value;
+    const horaSalida = document.getElementById("horarioSalida").value;
+
+    if (horaEntrada >= horaSalida) {
+        alert("El horario de entrada debe ser anterior al horario de salida.");
+        return false;
+    }
+
+    return true;
+}
