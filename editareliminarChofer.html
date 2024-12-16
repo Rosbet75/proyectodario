@@ -91,17 +91,19 @@
 
     <div class="container-fluid">
         <div class="d-flex justify-content-end">
-          <form action="" method="GET" class="d-flex justify-content-end">
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="viajes" onchange="javascript:this.submit()">
+          <form action="" method="get" class="d-flex justify-content-end">
+            <input type="hidden" name="viajes" value="1">
+            <input type="hidden" name="quejas" value="1">
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="viajes" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
               <option value="1" selected>Mas viajes primero</option>
               <option value="2">Menos viajes primero</option>
             </select>
-            <input type="hidden" name="viajes">
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="quejas" onchange="javascript:this.submit()">
-              <option selectedvalue="1">Mas quejas primero</option>
+            
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="quejas" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
+              <option selected value="1">Mas quejas primero</option>
               <option value="2">Menos quejas primero</option>
             </select>
-            <input type="hidden" name="quejas">
+            
           </form>
         </div>
     </div>

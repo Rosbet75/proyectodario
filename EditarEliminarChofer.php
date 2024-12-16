@@ -1,10 +1,8 @@
 <?php
 $cnn = new mysqli("localhost", "root", "eneto", "eneto");
-if(isset($_GET['orden'])) {
-    
-} else {
+$quejas = isset($_GET['quejas']) ? $_GET['quejas'] : '1';
+$viajes = isset($_GET['viajes']) ? $_GET['viajes'] : '1';
 
-}
 
 ?>
 <!DOCTYPE html>
@@ -111,21 +109,25 @@ if(isset($_GET['orden'])) {
 
     <div class="container-fluid">
         <div class="d-flex justify-content-end">
-          <form action="" method="GET" class="d-flex justify-content-end">
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="viajes" onchange="javascript:this.submit()">
-              <option value="1" selected>Mas viajes primero</option>
-              <option value="2">Menos viajes primero</option>
+          <form action="" method="get" class="d-flex justify-content-end">
+            <input type="hidden" name="viajes" value="<?php echo $viajes?>">
+            <input type="hidden" name="quejas" value="<?php echo $quejas?>">
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="viajes" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
+              <option value="1" <?php if($viajes == 1) echo "selected"?>>Mas viajes primero</option>
+              <option value="2" <?php if($viajes == 2) echo "selected"?>>Menos viajes primero</option>
             </select>
-            <input type="hidden" name="viajes">
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="quejas" onchange="javascript:this.submit()">
-              <option selectedvalue="1">Mas quejas primero</option>
-              <option value="2">Menos quejas primero</option>
+            
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="quejas" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
+              <option  value="1" <?php if($quejas == 1) echo "selected"?>>Mas quejas primero</option>
+              <option value="2" <?php if($quejas == 2) echo "selected"?>>Menos quejas primero</option>
             </select>
-            <input type="hidden" name="quejas">
+            
           </form>
         </div>
     </div>
 
+    <br>
+    <p>test: <?php echo $quejas?></p>
     <br>
 
     <div class="container-fluid">

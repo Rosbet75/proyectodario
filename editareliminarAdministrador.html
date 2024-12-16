@@ -90,26 +90,20 @@
 
     <div class="container-fluid">
         <div class="d-flex justify-content-end">
-            <div class="dropdown me-3">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="filtro" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Filtro
-                </button>
-                <div class="dropdown-menu" aria-labelledby="filtro">
-                  <button class="dropdown-item" type="button">Todos</button>
-                  <button class="dropdown-item" type="button">privilegio1</button>
-
-                </div>
-            </div>
-            <div class="d-flex justify-content-end">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="orden" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Orden
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="orden">
-                      <button class="dropdown-item" type="button">Mas Reciente</button>
-                      <button class="dropdown-item" type="button">Mas Antiguo</button>
-                    </div>
-                </div>
+          <form action="" method="get" class="d-flex justify-content-end">
+            <input type="hidden" name="viajes" value="1">
+            <input type="hidden" name="quejas" value="1">
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="viajes" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
+              <option value="1" selected>Mas viajes primero</option>
+              <option value="2">Menos viajes primero</option>
+            </select>
+            
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="quejas" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
+              <option selected value="1">Mas quejas primero</option>
+              <option value="2">Menos quejas primero</option>
+            </select>
+            
+          </form>
             </div>
         </div>
     </div>
