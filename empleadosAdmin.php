@@ -2,7 +2,7 @@
 $cnn = mysqli_connect("localhost", "root", "eneto", "eneto");
 
 if (!$cnn) {
-    die("Conexión fallida: " . mysqli_connect_error());
+    die("Conexin fallida: " . mysqli_connect_error());
 }
 
 if (isset($_POST['curp']) && isset($_POST['apellidoPaterno']) && isset($_POST['apellidoMaterno']) && isset($_POST['nombre']) && isset($_POST['idCargo']) && isset($_POST['horarioEntrada']) && isset($_POST['horarioSalida'])) {
