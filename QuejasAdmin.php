@@ -46,6 +46,18 @@ if(isset($_POST['actualizar'])){
     echo "Error al marcas queja: " . $cnn->error;
   }
 }
+$opcionesSancion = "";
+$querySancion = "select * from conceptoSanciones;";
+$sanc = $cnn -> query($querySancion);
+while($row = $sanc -> fetch_array(MYSQLI_ASSOC)){
+  $opcionesSancion .= "<option value='{$row['idSancion']}'>{$row['sancion']}</option>";
+}
+$opcionesCitas = "";
+$queryCitas = "select * from conceptoCitas;";
+$citas = $cnn -> query($queryCitas);
+while($row = $citas -> fetch_array(MYSQLI_ASSOC)){
+  $opcionesCitas .= "<option value='{$row['idConcepto']}'>{$row['concepto']}</option>";
+}
 $meagarras = "select * from queja join viajes on viajes.idViaje = queja.idViaje join choferes on choferes.idChofer = viajes.idChofer join empleados on empleados.curp = choferes.curp order by queja.createdAt ";
 
 if ($recientes == "1") {
@@ -58,6 +70,7 @@ if ($recientes == "1") {
 } else {
   $meagarras .= "desc;";
 }
+
 
 $consul = $cnn->query($meagarras);
 $tablas = "";
@@ -123,15 +136,18 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
             <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
           </div>
           <div class='modal-body'>
-            <form id='formCita'>
+            <form id='formCita' method='post'>
+            <input type='hidden' value='citacion' name='citacion'>
+            <input type='hidden' value='{$ren['idQueja']} name='quejaId'>
+
               <div class='row mb-3'>
                 <div class='col-md-6 '>
                   <label for='fechaCita' class='form-label'>Id del Chofer</label>
-                  <input type='text' class='form-control ancho-input-2' value='{$ren['idChofer']}' id='IdChofer' readonly>
+                  <input type='text' class='form-control ancho-input-2' value='{$ren['idChofer']}' id='IdChofer' readonly name='idChofer'>
                 </div>
                 <div class='col-md-6 '>
                   <label for='fechaCita' class='form-label'>Fecha de Cita</label>
-                  <input type='datetime-local' class='form-control ancho-input-2' id='fechaCita' required>
+                  <input type='datetime-local' class='form-control ancho-input-2' id='fechaCita' required name='fechaCita'>
                 </div>
                 
               </div>
@@ -139,17 +155,18 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
               <div class='row mb-3'>
                 <div class='col-md-6'>
                   <label for='concepto' class='form-label'>Concepto</label>
-                  <select class='form-select' id='concepto' required>
+                  <select class='form-select' id='concepto' required name='conceptoCita'>
                     <option value=''>Seleccionar concepto</option>
-                    <option value='1'>motivo1</option>
+                    {$opcionesCitas}
+                  
 
                   </select>
                 </div>
                 <div class='col-md-6'>
                   <label for='sancion' class='form-label'>Sancion</label>
-                  <select class='form-select' id='sancion' required>
+                  <select class='form-select' id='sancion' required name='conceptoSancion'>
                     <option value=''>Seleccionar sancion</option>
-                    <option value='1'>sancion1</option>
+                    {$opcionesSancion}
 
                   </select>
                 </div>
@@ -157,7 +174,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
 
               <div class='mb-3'>
                 <label for='comentarios' class='form-label'>Comentarios</label>
-                <textarea class='form-control' id='comentarios' rows='4' required></textarea>
+                <textarea class='form-control' id='comentarios' rows='4' required name='comentario'></textarea>
               </div>
             </form>
           </div>
