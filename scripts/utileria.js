@@ -37,4 +37,14 @@ function verificarContrasenas() {
     }
 }
 
+function sobrescribirValor(event) {
+    // Obtener el campo de input
+    var input = event.target;
+    var valor = input.value;  // Valor que el usuario está escribiendo
 
+    // Aquí podemos realizar una modificación en el valor
+    // Forzamos el valor a tener un texto específico o hacer alguna transformación
+    input.value = valor.toUpperCase();  // Ejemplo: convertir todo a mayúsculas
+
+    console.log('Valor sobrescrito:', input.value); 
+}
