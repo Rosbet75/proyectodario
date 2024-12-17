@@ -65,7 +65,6 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
         </div>
     </div>
 
-    <!-- Modal para confirmar eliminación -->
     <div class='modal fade' id='modalEliminar{$ren['numTar']}' tabindex='-1' aria-labelledby='modalEliminarLabel' aria-hidden='true'>
         <div class='modal-dialog'>
             <div class='modal-content'>
@@ -143,7 +142,6 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
         <?= $tablas ?>
     </div>
 
-    <!-- Modal -->
     <div class="modal fade" id="metodoPagoModal" tabindex="-1" aria-labelledby="metodoPagoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
