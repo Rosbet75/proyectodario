@@ -57,7 +57,9 @@ create table vehiculos(idMatricula varchar(8) primary key not null,
 create table choferes(idChofer int primary key auto_increment,
                     curp varchar(18) not null unique,
                     num_licencia varchar(12) not null UNIQUE,
-                    foreign Key(curp) references empleados(curp) on delete cascade on update cascade);
+                    foreign Key(curp) references empleados(curp) on delete cascade on update cascade,
+                    createdAt TIMESTAMP default CURRENT_TIMESTAMP,
+                    updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
 create table viajes(idViaje int primary key auto_increment,
                 idChofer int not null,
                 idUsuario varchar(50) not null,

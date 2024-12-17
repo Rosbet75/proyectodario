@@ -230,9 +230,6 @@ $cnn->close();
       </div>
     </div>
   </nav>
-    <p>test: <?php echo isset($_POST['actualizar']); ?> test curp: <?php echo $_POST['curp']?></p>
-    
-   
 
     <?php echo $tablas; ?>
 </body>
