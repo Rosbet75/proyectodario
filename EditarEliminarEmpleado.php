@@ -15,7 +15,7 @@ if(isset($_POST['actualizar'])){
     $horariosalida = $_POST['horariosalida'];
     $apellidopaterno = $_POST['apellidopaterno'];
 
-    $stmt = $cnn->prepare("UPDATE empleado SET apellidopaterno = ?, apellidomaterno = ?, nombre = ?, idCargo = ?, horarioentrada = ?, horariosalida = ? WHERE curp = ?;");
+    $stmt = $cnn->prepare("UPDATE empleados SET apellidopaterno = ?, apellidomaterno = ?, nombre = ?, idCargo = ?, horarioentrada = ?, horariosalida = ? WHERE curp = ?;");
     $stmt->bind_param("sssisss", $apellidopaterno, $apellidomaterno, $nombre, $idCargo, $horarioentrada, $horariosalida, $curp);
 
     if ($stmt->execute()) {
@@ -35,12 +35,16 @@ if(isset($_POST['actualizar'])){
         echo "Error al eliminar el empleado: " . $cnn->error;
     }
 }
-$meagarras = "select * from empleados join cargoLaboral on empleados.idCargo = cargoLaboral.idCargo;";
+$meagarras = "select * from empleados join cargoLaboral on empleados.idCargo = cargoLaboral.idCargo";
 
 if ($cargo == "1") {
-    $meagarras .= "";
+    $meagarras .= ";";
+} else if ($cargo == "2") {
+    $meagarras .= " where empleados.idCargo = 1;";
+} else if ($cargo == "3"){
+  $meagarras .= " where empleados.idCargo = 2;";
 } else {
-    $meagarras .= "";
+  $meagarras .= " where empleados.idCargo = 3;";
 }
 
 $consul = $cnn->query($meagarras);
@@ -101,12 +105,12 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
           <div class='row mb-3'>
             <div class='col-md-6'>
               <label class='form-label'>CURP</label>
-              <input type='text' class='form-control' value='{$ren['curp']}' readonly>
+              <input type='text' class='form-control' value='{$ren['curp']}' readonly name='curp'>
               <small class='text-muted'>La CURP no se puede modificar</small>
             </div>
             <div class='col-md-6'>
               <label class='form-label'>Cargo</label>
-              <select class='form-select' required name='cargo'>
+              <select class='form-select' required name='idCargo'>
                 <option value='1'>Jefe de comunicaciones</option>
                 <option value='2'>Atencion de radio</option>
                 <option value='3'>Chofer</option>
@@ -117,26 +121,26 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
           <div class='row mb-3'>
             <div class='col-md-4'>
               <label class='form-label'>Nombre</label>
-              <input type='text' class='form-control' value='{$ren['nombre']}' required>
+              <input type='text' class='form-control' value='{$ren['nombre']}' required name='nombre'>
             </div>
             <div class='col-md-4'>
               <label class='form-label'>Apellido Paterno</label>
-              <input type='text' class='form-control' value='{$ren['apellidoPaterno']}' required>
+              <input type='text' class='form-control' value='{$ren['apellidoPaterno']}' required name='apellidopaterno'>
             </div>
             <div class='col-md-4'>
               <label class='form-label'>Apellido Materno</label>
-              <input type='text' class='form-control' value='{$ren['apellidoMaterno']}' required>
+              <input type='text' class='form-control' value='{$ren['apellidoMaterno']}' required name='apellidomaterno'>
             </div>
           </div>
 
           <div class='row mb-3'>
             <div class='col-md-6'>
               <label class='form-label'>Horario Entrada</label>
-              <input type='time' class='form-control' value='{$ren['horarioEntrada']}' required>
+              <input type='time' class='form-control' value='{$ren['horarioEntrada']}' required name='horarioentrada'>
             </div>
             <div class='col-md-6'>
               <label class='form-label'>Horario Salida</label>
-              <input type='time' class='form-control' value='{$ren['horarioSalida']}' required>
+              <input type='time' class='form-control' value='{$ren['horarioSalida']}' required name='horariosalida'>
             </div>
           </div>
         
@@ -150,7 +154,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
   </div>
 </div>
 
-<div class='modal fade' id='modalEliminar' tabindex='-1' aria-labelledby='modalEliminarLabel' aria-hidden='true'>
+<div class='modal fade' id='modalEliminar{$ren['curp']}' tabindex='-1' aria-labelledby='modalEliminarLabel' aria-hidden='true'>
   <div class='modal-dialog'>
     <div class='modal-content'>
       <div class='modal-header'>
@@ -271,15 +275,17 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
         <div class="d-flex justify-content-end">
           <form action="" method="get" class="d-flex justify-content-end">
             <input type="hidden" name="cargo" value="1">
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="viajes" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
-              <option value="1">Mas viajes primero</option>
-              <option value="2">Menos viajes primero</option>
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="cargo" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
+              <option value="1" <?php if($cargo == 1) echo "selected" ?>>Todos</option>
+              <option value="2" <?php if($cargo == 2) echo "selected" ?>>Jefe de comunicaciones</option>
+              <option value="3" <?php if($cargo == 3) echo "selected" ?>>Atencion de radio</option>
+              <option value="4" <?php if($cargo == 4) echo "selected" ?>>Chofer</option>
             </select>
           </form>
         </div>
     </div>
 
-    
+    <?php echo $tablas;?>
 
 </body>
 </html>
