@@ -5,47 +5,40 @@ if (!$cnn) {
     die("Conexion fallida: " . mysqli_connect_error());
 }
 
-if (isset($_POST['nickname']) && isset($_POST['correo']) && isset($_POST['contra']) && isset($_POST['curp']) && isset($_POST['privilegios'])) {
-    $nickname = $_POST['nickname'];
-    $correo = $_POST['correo'];
-    $contra = $_POST['contra'];
+if (isset($_POST['curp']) && isset($_POST['num_licencia'])) {
     $curp = $_POST['curp'];
-    $privilegios = $_POST['privilegios'];
+    $num_licencia = $_POST['num_licencia'];
 
-    
-    if (empty($nickname) || empty($correo) || empty($contra) || empty($curp) || empty($privilegios)) {
-      echo "<div class='alert alert-warning mt-4'>Todos los campos son obligatorios</div>";
-  } else {
-      $checkNickname = "SELECT * FROM admins WHERE nickname = '$nickname'";
-      $resultNickname = mysqli_query($cnn, $checkNickname);
-  
-      if (mysqli_num_rows($resultNickname) > 0) {
-          echo "<div class='alert alert-warning mt-4'>El nombre de usuario ya esta registrado.</div>";
-      } else {
-          $checkCorreo = "SELECT * FROM admins WHERE correo = '$correo'";
-          $resultCorreo = mysqli_query($cnn, $checkCorreo);
-  
-          if (mysqli_num_rows($resultCorreo) > 0) {
-              echo "<div class='alert alert-warning mt-4'>El correo electronico ya esta registrado.</div>";
-          } else {
-              $checkCurpAdmins = "SELECT * FROM admins WHERE curp = '$curp'";
-              $resultCurpAdmins = mysqli_query($cnn, $checkCurpAdmins);
-  
-              if (mysqli_num_rows($resultCurpAdmins) > 0) {
-                  echo "<div class='alert alert-warning mt-4'>La CURP ya esta registrada como administrador.</div>";
-              } else {
-                  $sql = "INSERT INTO admins (nickname, correo, contra, curp, privilegios, createdAt, updatedAt)
-                          VALUES ('$nickname', '$correo', '$contra', '$curp', '$privilegios', NOW(), NOW())";
-  
-                  if (mysqli_query($cnn, $sql)) {
-                      echo "<div class='alert alert-success mt-4'>Administrador registrado con exito</div>";
-                  } else {
-                      echo "<div class='alert alert-danger mt-4'>Error: " . mysqli_error($cnn) . "</div>";
-                  }
-              }
-          }
-      }
-  }
+    if (empty($curp) || empty($num_licencia)) {
+        echo "<div class='alert alert-warning mt-4'>Todos los campos son obligatorios</div>";
+    } else {
+        $checkLicencia = "SELECT * FROM choferes WHERE num_licencia = '$num_licencia'";
+        $resultLicencia = mysqli_query($cnn, $checkLicencia);
+
+        if (mysqli_num_rows($resultLicencia) > 0) {
+            echo "<div class='alert alert-warning mt-4'>El numero de licencia ya esta registrado.</div>";
+        } else {
+            $checkCurpChoferes = "SELECT * FROM choferes WHERE curp = '$curp'";
+            $resultCheckChoferes = mysqli_query($cnn, $checkCurpChoferes);
+
+            $checkCurpAdmins = "SELECT * FROM admins WHERE curp = '$curp'";
+            $resultCheckAdmins = mysqli_query($cnn, $checkCurpAdmins);
+
+            if (mysqli_num_rows($resultCheckChoferes) > 0) {
+                echo "<div class='alert alert-warning mt-4'>El chofer con esta CURP ya esta registrado.</div>";
+            } elseif (mysqli_num_rows($resultCheckAdmins) > 0) {
+                echo "<div class='alert alert-warning mt-4'>La CURP ya esta registrada como administrador.</div>";
+            } else {
+                $sql = "INSERT INTO choferes (curp, num_licencia) VALUES ('$curp', '$num_licencia')";
+
+                if (mysqli_query($cnn, $sql)) {
+                    echo "<div class='alert alert-success mt-4'>Chofer registrado con exito</div>";
+                } else {
+                    echo "<div class='alert alert-danger mt-4'>Error: " . mysqli_error($cnn) . "</div>";
+                }
+            }
+        }
+    }
 }
 
 $query = "SELECT curp FROM empleados";
@@ -56,18 +49,22 @@ if (!$result) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Administrador</title>
+    <title>Registrar choferes</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/barra.css">
     <link rel="stylesheet" href="css/estilos.css">
+
 </head>
 <body>
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary color">
     <div class="container-fluid color">
       <a class="navbar-brand white" href="#">Eneto.Inc</a>
@@ -124,23 +121,10 @@ if (!$result) {
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <div class="card">
-                <h1 class="text-success text-center mt-3">Registrar Administrador</h1>
+                <h1 class="text-success text-center mt-3">Registrar Chofer</h1>
                 <div class="card-body">
-                    <form id="registroAdmin" action="administradorAdmin.php" method="POST">
+                    <form id="registroChofer" action="choferesAdmin.php" method="POST">
                         <div class="form-group">
-                            <label for="nickname">Nombre de usuario</label>
-                            <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Ingresa tu nombre de usuario" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="correo">Correo</label>
-                            <input type="email" class="form-control" id="correo" name="correo" placeholder="Ingresa el correo electrónico" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contra">Contraseña</label>
-                            <input type="password" class="form-control" id="contra" name="contra" placeholder="Ingresa la contraseña" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="curp">CURP</label>
                             <select class="form-control" id="curp" name="curp" required>
                                 <option value="" disabled selected>Selecciona una CURP</option>
                                 <?php
@@ -154,22 +138,10 @@ if (!$result) {
                                 ?>
                             </select>   
                         </div>
-                        <div class="form-group">
-                          <label for="privilegios">Privilegios</label>
-                          <select class="form-control" id="privilegios" name="privilegios" required>
-                              <option value="" disabled selected>Selecciona los privilegios</option>
-                              <?php
-                              $query = "SELECT idPriv, rol FROM privilegios";
-                              $result = mysqli_query($cnn, $query);
-                              if (mysqli_num_rows($result) > 0) {
-                                  while ($row = mysqli_fetch_assoc($result)) {
-                                      echo "<option value='" . $row["idPriv"] . "'>" . $row["rol"] . "</option>";
-                                  }
-                              } else {
-                                  echo "<option value='' disabled>No se encontraron privilegios</option>";
-                                  }
-                                  ?>
-                              </select>
+
+                        <div class="form-group mt-3">
+                            <label for="num_licencia">Numero de Licencia</label>
+                            <input type="text" class="form-control" id="num_licencia" name="num_licencia" minlength="12" maxlength="12" placeholder="Ingresa el numero de licencia (12 digitos)" required>
                         </div>
                         <br>
                         <button class="btn color white w-100" type="submit">Registrar</button>
@@ -178,7 +150,8 @@ if (!$result) {
             </div>
         </div>
     </div>
-  </div>
+</div>  
+
 </body>
 <script src="scripts/utileria.js"></script>
 </html>
@@ -186,3 +159,4 @@ if (!$result) {
 <?php
 mysqli_close($cnn);
 ?>
+
