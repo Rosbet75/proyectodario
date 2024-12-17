@@ -36,40 +36,43 @@
     </div>
   </nav>
 
-      <div class="contenedor">
-        <h2>Solicitar Viaje</h2>
-        <form>
+  <div class="contenedor">
+    <h2>Solicitar Viaje</h2>
+    <form>
+        <div>
+            <br>
             <div>
-              <br>
-                <div>
-                    <label for="fecha" class="form-label">Fecha del Viaje</label>
-                    <input type="date" class="form-control ancho-input" id="fecha" required>
-                </div>
+                <label for="fecha" class="form-label">Fecha del Viaje</label>
+                <input type="date" class="form-control ancho-input" id="fecha" required>
             </div>
-            
-            <div>
-              <br>
-                <label for="tarjeta" class="form-label">Tarjeta seleccionada</label>
-              <select id="tarjeta" class="form-control">
-                  <option value="" disabled selected>Selecciona una tarjeta</option>
-                  <option value="tarjeta1">tarjeta 1</option>
+        </div>
+        
+        <div>
+            <br>
+            <label for="tarjeta" class="form-label">Tarjeta seleccionada</label>
+            <select id="tarjeta" class="form-control">
+                <option value="" disabled selected>Selecciona una tarjeta</option>
+                <option value="tarjeta1">tarjeta 1</option>
+            </select>
+            <a href="metodosPagoUsuario.html" class="btn btn-link">Agregar nuevo metodo de pago</a>
 
-              </select>
-          </div>
-          
-            <div>
-              <br>
-                <label for="destino" class="form-label">Destino</label>
-                <input type="text" class="form-control ancho-input" id="destino" placeholder="Ingrese la direccion de destino" required>
-            </div>
-            <div>
-              <br>
-                <label for="destino" class="form-label">Cuota</label>
-                <input type="text" class="form-control ancho-input" id="destino" placeholder="80" >
-            </div>
-              <br>
-            <button type="submit" class="btn color white">Solicitar Viaje</button>
-        </form>
-    </div>
+        </div>
+        
+        <div>
+            <br>
+            <label for="destino" class="form-label">Destino</label>
+            <input type="text" class="form-control ancho-input" id="destino" placeholder="Ingrese la direccion de destino" required>
+        </div>
+        <div>
+            <br>
+            <label for="cuota" class="form-label">Cuota</label>
+            <input type="text" class="form-control ancho-input" id="cuota" placeholder="80">
+        </div>
+        <br>
+        <button type="submit" class="btn color white">Solicitar Viaje</button>
+    </form>
+    
+    <br>
+</div>
 </body>
 </html>
