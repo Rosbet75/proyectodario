@@ -11,7 +11,7 @@ if(isset($_POST['actualizar'])){
     $idChofer = $_POST['idChofer'];
     $curp = $_POST['curp'];
     $numLic = $_POST['num_licencia'];
-    $upt = $cnn -> query("update choferes set curp = '{$curp}', num_licencia = '{$numLic}' where idChofer = '{$idChofer}';");
+    $upt = $cnn -> query("update choferes set num_licencia = '{$numLic}' where idChofer = '{$idChofer}';");
 
     if ($upt) {
         echo "Chofer actualizado correctamente.";
@@ -83,6 +83,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
             <div class='col-md-4'>
               <label class='form-label'>CURP</label>
               <input type='text' class='form-control' value='{$ren['curp']}' maxlength='18' required name='curp'>
+              <small class='text-muted'>La CURP no se puede modificar</small>
             </div>
             <div class='col-md-4'>
               <label class='form-label'>Numero de Licencia</label>
@@ -114,7 +115,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
       <div class='modal-footer'>
       <form method='post' name='eliminacion'>
         <input type='hidden' name='idChofer' value='{$ren['idChofer']}'>
-        <input type='hidden' name='eliminar' value='1'
+        <input type='hidden' name='eliminar' value='1'>
         <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancelar</button>
         <button type='submit' class='btn btn-danger'>Eliminar</button>
         </form>
@@ -229,7 +230,7 @@ $cnn->close();
       </div>
     </div>
   </nav>
-
+    <p>test: <?php echo isset($_POST['actualizar']); ?> test curp: <?php echo $_POST['curp']?></p>
     
    
 
