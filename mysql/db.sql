@@ -76,7 +76,7 @@ create table queja(idQueja int primary key auto_increment,
                 idViaje int not null,
                 comentarios varchar(500) not null,
                 atendido BOOLEAN not null,
-                foreign key(idViaje) references viajes(idViaje),
+                foreign key(idViaje) references viajes(idViaje)on delete restrict on update cascade,
                 createdAt TIMESTAMP default CURRENT_TIMESTAMP,
                 updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
 
@@ -154,3 +154,58 @@ VALUES
 ('LMN654321098765432', 'LIC654321098'),
 ('OPQ432109876543210', 'LIC432109876'),
 ('RST321987654321098', 'LIC321987654');
+INSERT INTO usuarios (nickname, apellidoPaterno, apellidomaterno, nombre, sexo, correo, contra)
+VALUES
+('user1', 'González', 'Pérez', 'Laura', 'Femenino', 'laura@mail.com', 'password123'),
+('user2', 'Martínez', 'Hernández', 'Carlos', 'Masculino', 'carlos@mail.com', 'password123'),
+('user3', 'López', 'García', 'Ana', 'Femenino', 'ana@mail.com', 'password123'),
+('user4', 'Ramírez', 'Díaz', 'Jorge', 'Masculino', 'jorge@mail.com', 'password123'),
+('user5', 'Fernández', 'Sánchez', 'María', 'Femenino', 'maria@mail.com', 'password123');
+INSERT INTO vehiculos (idMatricula, anoVehiculo, modelo, plazas, color, disponible)
+VALUES
+('MAT12345', '2022', 'Toyota Corolla', 5, 'Blanco', 1),
+('MAT54321', '2020', 'Nissan Sentra', 5, 'Negro', 1),
+('MAT67890', '2021', 'Honda Civic', 5, 'Azul', 1),
+('MAT98765', '2019', 'Chevrolet Spark', 4, 'Rojo', 0),
+('MAT45678', '2023', 'Mazda 3', 5, 'Gris', 1),
+('MAT11223', '2018', 'Ford Fiesta', 5, 'Plata', 1),
+('MAT33445', '2023', 'Volkswagen Jetta', 5, 'Negro', 0),
+('MAT55667', '2021', 'Hyundai Elantra', 5, 'Blanco', 1),
+('MAT77889', '2020', 'Kia Forte', 5, 'Azul', 0),
+('MAT99001', '2019', 'Renault Duster', 5, 'Verde', 1);
+
+
+INSERT INTO viajes (idChofer, idUsuario, destino, costo_viaje, cuota_ganancia, idMatricula)
+VALUES
+(1, 'user1', 'Ciudad de México', 500, 100, 'MAT12345'), -- Viaje 1
+(1, 'user2', 'Guadalajara', 800, 200, 'MAT12345'),     -- Viaje 2
+(2, 'user3', 'Monterrey', 700, 150, 'MAT54321'),       -- Viaje 3
+(3, 'user4', 'Cancún', 1200, 300, 'MAT67890'),         -- Viaje 4
+(4, 'user5', 'Puebla', 400, 90, 'MAT98765');           -- Viaje 5
+
+INSERT INTO queja (idViaje, comentarios, atendido)
+VALUES
+(1, 'El chofer llegó tarde al destino', FALSE),  -- Queja 1 (Viaje 1)
+(2, 'El vehículo estaba en mal estado', TRUE),   -- Queja 2 (Viaje 2)
+(3, 'El chofer fue grosero durante el viaje', FALSE), -- Queja 3 (Viaje 3)
+(2, 'El viaje fue cancelado sin previo aviso', TRUE); -- Queja 4 (Viaje 5)
+
+
+SELECT 
+    c.idChofer,
+    e.nombre AS nombreChofer,
+    e.apellidoPaterno,
+    e.apellidoMaterno,
+    c.num_licencia,
+    IFNULL(COUNT(v.idViaje), 0) AS totalViajes,
+    IFNULL(SUM(CASE WHEN q.idQueja IS NOT NULL THEN 1 ELSE 0 END), 0) AS totalQuejas
+FROM 
+    choferes c
+INNER JOIN 
+    empleados e ON c.curp = e.curp
+LEFT JOIN 
+    viajes v ON c.idChofer = v.idChofer
+LEFT JOIN 
+    queja q ON v.idViaje = q.idViaje
+GROUP BY 
+    c.idChofer, e.nombre, e.apellidoPaterno, e.apellidoMaterno, c.num_licencia;
