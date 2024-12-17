@@ -190,6 +190,13 @@ VALUES
 (3, 'El chofer fue grosero durante el viaje', FALSE), -- Queja 3 (Viaje 3)
 (2, 'El viaje fue cancelado sin previo aviso', TRUE); -- Queja 4 (Viaje 5)
 
+INSERT INTO admins (nickname, correo, contra, curp, privilegios)
+VALUES
+('admin1', 'admin1@mail.com', 'adminpass123', 'CURP12345678901234', 1),  -- Privilegio 'root' (Basado en el privilegio 1)
+('admin2', 'admin2@mail.com', 'adminpass456', 'CURP23456789012345', 2),  -- Privilegio 'admin' (Basado en el privilegio 2)
+('admin3', 'admin3@mail.com', 'adminpass789', 'CURP34567890123456', 2),  -- Privilegio 'admin' (Basado en el privilegio 2)
+('admin4', 'admin4@mail.com', 'adminpass101', 'CURP45678901234567', 1),  -- Privilegio 'root' (Basado en el privilegio 1)
+('admin5', 'admin5@mail.com', 'adminpass112', 'CURP56789012345678', 2);  -- Privilegio 'admin' (Basado en el privilegio 2)
 
 SELECT 
     c.idChofer,
@@ -210,4 +217,4 @@ LEFT JOIN
 GROUP BY 
     c.idChofer, e.nombre, e.apellidoPaterno, e.apellidoMaterno, c.num_licencia;
 
-select * from choferes;
+select * from admins;
