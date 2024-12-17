@@ -103,10 +103,34 @@ create table conceptoCitas(idConcepto int primary key AUTO_INCREMENT,
                             concepto varchar(100) not null unique,
                             createdAt TIMESTAMP default CURRENT_TIMESTAMP,
                             updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
+INSERT INTO conceptoCitas (concepto) VALUES
+('Revisión de rendimiento'),
+('Citaciones por violación de políticas'),
+('Reunión de seguimiento de desempeño'),
+('Evaluación de trabajo en equipo'),
+('Consulta de salud ocupacional'),
+('Asesoría en gestión de tiempo'),
+('Citación por actitud negativa en el trabajo'),
+('Citación por mal uso de recursos corporativos'),
+('Revisión de cumplimiento de objetivos'),
+('Entrevista de retroalimentación');
+
 create table conceptoSanciones(idSancion int primary key auto_increment,
                                 sancion varchar(100) not null unique,
                                 createdAt TIMESTAMP default CURRENT_TIMESTAMP,
                                 updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
+INSERT INTO conceptoSanciones (sancion) VALUES
+('Penalización de días laborales sin goce de sueldo'),
+('Reducción de asignación de viajes'),
+('Suspensión temporal del puesto de trabajo'),
+('Amonestación verbal'),
+('Reducción de beneficios laborales'),
+('Multa económica'),
+('Reubicación en otro puesto de menor responsabilidad'),
+('Suspensión de acceso a beneficios corporativos'),
+('Retiro de acceso a herramientas de trabajo'),
+('Descuento en bono anual por desempeño');
+
 create table citas(idCita int primary key auto_increment,
                     idChofer int not null,
                     fechaCita datetime not null,
@@ -217,4 +241,4 @@ LEFT JOIN
 GROUP BY 
     c.idChofer, e.nombre, e.apellidoPaterno, e.apellidoMaterno, c.num_licencia;
 
-select * from admins;
+select * from queja;
