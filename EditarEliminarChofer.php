@@ -28,8 +28,44 @@ if(isset($_POST['actualizar'])){
         echo "Error al eliminar el chofer: " . $cnn->error;
     }
 }
+$meagarras = "SELECT 
+    c.idChofer,
+    c.curp,
+    e.nombre AS nombreChofer,
+    e.apellidoPaterno,
+    e.apellidoMaterno,
+    c.num_licencia,
+    IFNULL(COUNT(v.idViaje), 0) AS totalViajes,
+    IFNULL(SUM(CASE WHEN q.idQueja IS NOT NULL THEN 1 ELSE 0 END), 0) AS totalQuejas
+FROM 
+    choferes c
+INNER JOIN 
+    empleados e ON c.curp = e.curp
+LEFT JOIN 
+    viajes v ON c.idChofer = v.idChofer
+LEFT JOIN 
+    queja q ON v.idViaje = q.idViaje
+GROUP BY 
+    c.idChofer, e.nombre, e.apellidoPaterno, e.apellidoMaterno, c.num_licencia 
+ORDER BY 
+    totalQuejas ";
 
-$consul = $cnn -> query("select * from choferes");
+if ($quejas == "1") {
+    $meagarras .= "DESC, ";
+} else {
+    $meagarras .= "ASC, ";
+}
+
+$meagarras .= "totalViajes ";
+
+if ($viajes == "1") {
+    $meagarras .= "DESC;";
+} else {
+    $meagarras .= "ASC;";
+}
+
+$consul = $cnn->query($meagarras);
+
 $tablas = "";
 while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
  $tablas .= "<br>
@@ -39,14 +75,26 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
       <div class='col-lg-12'>
         <div class='card'>
           <div class='card-body'>
-            <div class='form-group'>
-              <label for=''>ID: {$ren['idChofer']}</label>
-            </div>
-            <div class='form-group'>
-              <label for=''>CURP: {$ren['curp']}</label>
-            </div>
-            <div class='form-group'>
-              <label for=''>Numero de Licencia: {$ren['num_licencia']}</label>
+            <div class='row mb-3'>
+                <div class='col-md-4'>
+                    <div class='form-group'>
+                    <label for=''>ID: {$ren['idChofer']}</label>
+                    </div>
+                    <div class='form-group'>
+                    <label for=''>CURP: {$ren['curp']}</label>
+                    </div>
+                    <div class='form-group'>
+                    <label for=''>Numero de Licencia: {$ren['num_licencia']}</label>
+                    </div>
+                </div>
+                <div class='col-md-4'>
+                    <div class='form-group'>
+                    <label for=''>Quejas: {$ren['totalQuejas']}</label>
+                    </div>
+                    <div class='form-group'>
+                    <label for=''>Viajes: {$ren['totalViajes']}</label>
+                    </div>
+                </div>
             </div>
             <div class='d-flex justify-content-end'>
               <button type='button' class='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalActualizar{$ren['idChofer']}'>
@@ -230,6 +278,27 @@ $cnn->close();
       </div>
     </div>
   </nav>
+  <div class="container-fluid">
+        <div class="d-flex justify-content-end">
+          <form action="" method="get" class="d-flex justify-content-end">
+            <input type="hidden" name="viajes" value="1">
+            <input type="hidden" name="quejas" value="1">
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="viajes" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
+              <option value="1" selected>Mas viajes primero</option>
+              <option value="2">Menos viajes primero</option>
+            </select>
+            
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="quejas" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
+              <option selected value="1">Mas quejas primero</option>
+              <option value="2">Menos quejas primero</option>
+            </select>
+            
+          </form>
+            </div>
+        </div>
+    </div>
+
+    <br>
 
     <?php echo $tablas; ?>
 </body>

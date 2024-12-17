@@ -209,3 +209,5 @@ LEFT JOIN
     queja q ON v.idViaje = q.idViaje
 GROUP BY 
     c.idChofer, e.nombre, e.apellidoPaterno, e.apellidoMaterno, c.num_licencia;
+
+select * from choferes;
