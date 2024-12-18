@@ -14,6 +14,13 @@ if (isset($_POST['nickname']) && isset($_POST['correo']) && isset($_POST['contra
     $apellidoPaterno = $_POST['apellidoPaterno'];
     $apellidomaterno = $_POST['apellidomaterno'];
     $sexo = $_POST['sexo'];
+    if ($contra === $confirmContra) {
+        
+        header('Location: barra.php');
+        exit; 
+    } else {
+        echo "<p class='text-danger'>Las contraseñas no coinciden. Intenta nuevamente.</p>";
+    }
 
     if (empty($nickname) || empty($correo) || empty($contra) || empty($confirmContra) || empty($nombre) || empty($apellidoPaterno) || empty($apellidomaterno) || empty($sexo)) {
         echo "<div class='alert alert-warning mt-4'>Todos los campos son obligatorios</div>";
@@ -110,7 +117,7 @@ mysqli_close($cnn);
                                 </div>
                             </div>
                             <br>
-                            <button class="btn btn-primary" type="submit">Registrar</button>
+                            <button class="btn btn-primary" type="submit" href="barra.php">Registrar</button>
                         </form>
                     </div>
                 </div>
