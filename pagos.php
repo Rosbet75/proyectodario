@@ -73,7 +73,7 @@ if(isset($_COOKIE['logeo'])){
   
   if($resultado > 0){
       if(isset($_POST['unlog'])){
-        setcookie("logeo", "", time() - 3600, "/", "localhost");
+        setcookie("logeo", "", time() - 3600, "/", $_SERVER['SERVER_ADDR']);
         header("Location: login.php");
         exit;
       }

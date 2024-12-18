@@ -73,7 +73,7 @@ function verificarCredenciales($nickname, $contrasena) {
     
     if($resultado > 0){
         if(isset($_POST['unlog'])){
-          setcookie("logeo", "", time() - 3600, "/", "127.0.0.1");
+          setcookie("logeo", "", time() - 3600, "/", $_SERVER['SERVER_ADDR']);
           header("Location: login.php");
           exit;
         }

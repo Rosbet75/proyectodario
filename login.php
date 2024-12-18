@@ -86,13 +86,13 @@
         
         $resultado = verificarCredenciales($_POST['username'], $_POST['contra']);
         if($resultado > 0){
-            setcookie("logeo", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", "localhost");
+            setcookie("logeo", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", $_SERVER['SERVER_ADDR']);
             header("Location: barra.php");
             exit;
         }
         $resultado = verificarCredencialesAdmin($_POST['username'], $_POST['contra']);
         if($resultado > 0){
-            setcookie("logeo", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", "localhost");
+            setcookie("logeo", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", $_SERVER['SERVER_ADDR']);
             header("Location: BarraAdmin.php");
             exit;
         }
