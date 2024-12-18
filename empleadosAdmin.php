@@ -101,7 +101,7 @@ if (!$result) {
             <a class="nav-link white" href="CitasAdmin.php">Citas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="pagos.html">Pagos</a>
+            <a class="nav-link white" href="pagos.php">Pagos</a>
           </li>
           <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
