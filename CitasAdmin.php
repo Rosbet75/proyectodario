@@ -1,83 +1,57 @@
 <?php
-
 $cnn = new mysqli("localhost", "root", "eneto", "eneto");
 if(mysqli_connect_errno()){
     echo $cnn->connect_error;
     exit();
 }
-$quejas = isset($_GET['quejas']) ? $_GET['quejas'] : '1';
-$viajes = isset($_GET['viajes']) ? $_GET['viajes'] : '1';
 
-if(isset($_POST['actualizar'])){
-    $idChofer = $_POST['idChofer'];
-    $curp = $_POST['curp'];
-    $numLic = $_POST['num_licencia'];
-    $upt = $cnn -> query("update choferes set num_licencia = '{$numLic}' where idChofer = '{$idChofer}';");
+$citasQuery = "SELECT idCita, idChofer, fechaCita, concepto, comentarios, sancion FROM citas";
+$citasResult = $cnn->query($citasQuery);
 
-    if ($upt) {
-        echo "Chofer actualizado correctamente.";
-    } else {
-        echo "Error al actualizar el chofer: " . $cnn->error;
+// Verificamos si hay citas para mostrar
+$citasHTML = "";
+if ($citasResult->num_rows > 0) {
+    // Iteramos sobre cada cita y generamos el HTML correspondiente
+    while ($cita = $citasResult->fetch_assoc()) {
+        $citasHTML .= '
+        <div class="container-fluid">
+            <div class="container mt-9">
+                <div class="column justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="">ID Cita: ' . $cita['idCita'] . '</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">ID Chofer: ' . $cita['idChofer'] . '</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Fecha: ' . $cita['fechaCita'] . '</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Concepto: ' . $cita['concepto'] . '</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Comentarios: ' . $cita['comentarios'] . '</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Sancion: ' . $cita['sancion'] . '</label>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary btn-success ms-2">Marcar como atendido</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>';
     }
-
-} else if (isset($_POST['eliminar'])){
-    $idChofer = $_POST['idChofer'];
-    $del = $cnn->query("DELETE FROM choferes WHERE idChofer = {$idChofer}");
-    if ($del) {
-        echo "Chofer eliminado correctamente.";
-    } else {
-        echo "Error al eliminar el chofer: " . $cnn->error;
-    }
-}
-$meagarras = "SELECT 
-    c.idChofer,
-    c.curp,
-    e.nombre AS nombreChofer,
-    e.apellidoPaterno,
-    e.apellidoMaterno,
-    c.num_licencia,
-    IFNULL(COUNT(v.idViaje), 0) AS totalViajes,
-    IFNULL(SUM(CASE WHEN q.idQueja IS NOT NULL THEN 1 ELSE 0 END), 0) AS totalQuejas
-FROM 
-    choferes c
-INNER JOIN 
-    empleados e ON c.curp = e.curp
-LEFT JOIN 
-    viajes v ON c.idChofer = v.idChofer
-LEFT JOIN 
-    queja q ON v.idViaje = q.idViaje
-GROUP BY 
-    c.idChofer, e.nombre, e.apellidoPaterno, e.apellidoMaterno, c.num_licencia 
-ORDER BY 
-    totalQuejas ";
-
-if ($quejas == "1") {
-    $meagarras .= "DESC, ";
 } else {
-    $meagarras .= "ASC, ";
+    $citasHTML = "No hay citas disponibles.";
 }
-
-$meagarras .= "totalViajes ";
-
-if ($viajes == "1") {
-    $meagarras .= "DESC;";
-} else {
-    $meagarras .= "ASC;";
-}
-
-$consul = $cnn->query($meagarras);
-
-$tablas = "";
-while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
- $tablas .= "
-
-";
-
-};
-
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -92,7 +66,6 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
 </head>
 <body>
     
-  
 <nav class="navbar navbar-expand-lg bg-body-tertiary color">
     <div class="container-fluid color">
       <a class="navbar-brand white" href="#">Eneto.Inc</a>
@@ -154,41 +127,10 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
       </div>
     </div>
   </nav>
-  
-    <br>
-    <div class="container-fluid">
-        <div class="container mt-9">
-            <div class="column justify-content-center">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="">ID Cita: 1</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="">ID Chofer: 101</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Fecha: 2024-12-14 10:30:00</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Concepto: 3</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Comentarios: Cliente no se presento</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Sancion: 2</label>
-                            </div>
-                            <div class="d-flex justify-content-end">
 
-                                <button class="btn btn-primary btn-success ms-2">Marcar como atendido</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  
+    <?php echo $citasHTML; ?>
+</div>
 </body>
 </html>
+
