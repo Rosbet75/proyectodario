@@ -1,17 +1,31 @@
 <?php
 $cnn = new mysqli("localhost", "root", "eneto", "eneto");
-if(mysqli_connect_errno()){
+if (mysqli_connect_errno()) {
     echo $cnn->connect_error;
     exit();
 }
 
-$citasQuery = "SELECT idCita, idChofer, fechaCita, concepto, comentarios, sancion FROM citas";
+if (isset($_POST['idCita'])) {
+    $idCita = intval($_POST['idCita']);
+    
+    $updateQuery = "UPDATE citas SET atendido = 1 WHERE idCita = ?";
+    $stmt = $cnn->prepare($updateQuery);
+    $stmt->bind_param("i", $idCita);
+    
+    if ($stmt->execute()) {
+        echo "<div class='alert alert-success'>Cita marcada como atendida.</div>";
+    } else {
+        echo "<div class='alert alert-danger'>Error al marcar la cita: " . $stmt->error . "</div>";
+    }
+    
+    $stmt->close();
+}
+
+$citasQuery = "SELECT idCita, idChofer, fechaCita, concepto, comentarios, sancion, atendido FROM citas";
 $citasResult = $cnn->query($citasQuery);
 
-// Verificamos si hay citas para mostrar
 $citasHTML = "";
 if ($citasResult->num_rows > 0) {
-    // Iteramos sobre cada cita y generamos el HTML correspondiente
     while ($cita = $citasResult->fetch_assoc()) {
         $citasHTML .= '
         <div class="container-fluid">
@@ -37,10 +51,21 @@ if ($citasResult->num_rows > 0) {
                                 </div>
                                 <div class="form-group">
                                     <label for="">Sancion: ' . $cita['sancion'] . '</label>
-                                </div>
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn btn-primary btn-success ms-2">Marcar como atendido</button>
-                                </div>
+                                </div>';
+        
+        if ($cita['atendido'] == 1) {
+            $citasHTML .= '<div class="form-group"><label for="">Estado: Atendida</label></div>';
+        } else {
+            $citasHTML .= '
+            <div class="d-flex justify-content-end">
+                <form method="POST" action="">
+                    <input type="hidden" name="idCita" value="' . $cita['idCita'] . '">
+                    <button type="submit" class="btn btn-primary btn-success ms-2">Marcar como atendido</button>
+                </form>
+            </div>';
+        }
+
+        $citasHTML .= '
                             </div>
                         </div>
                     </div>
@@ -60,7 +85,7 @@ if ($citasResult->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Citas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55 NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/barra.css">
     <link rel="stylesheet" href="css/estilos.css">
 </head>
@@ -68,7 +93,7 @@ if ($citasResult->num_rows > 0) {
     
 <nav class="navbar navbar-expand-lg bg-body-tertiary color">
     <div class="container-fluid color">
-      <a class="navbar-brand white" href="#">Eneto.Inc</a>
+    <a class="navbar-brand white" href="#">Eneto.Inc</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -114,23 +139,22 @@ if ($citasResult->num_rows > 0) {
             <a class="nav-link white" href="pagos.php">Pagos</a>
           </li>
           <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Vehiculos
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="vehiculosAdmin.php">Registrar Vehiculo</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="editareliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
-                    </div>
-                </li>
+            <a class="nav-link dropdown-toggle white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Vehiculos
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="vehiculosAdmin.php">Registrar Vehiculo</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="editareliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  
+  <div class="container">
     <?php echo $citasHTML; ?>
-</div>
+  </div>
 </body>
 </html>
-
