@@ -8,10 +8,8 @@ if(mysqli_connect_errno()){
 $citasQuery = "SELECT idCita, idChofer, fechaCita, concepto, comentarios, sancion FROM citas";
 $citasResult = $cnn->query($citasQuery);
 
-// Verificamos si hay citas para mostrar
 $citasHTML = "";
 if ($citasResult->num_rows > 0) {
-    // Iteramos sobre cada cita y generamos el HTML correspondiente
     while ($cita = $citasResult->fetch_assoc()) {
         $citasHTML .= '
         <div class="container-fluid">
