@@ -266,8 +266,8 @@ $cnn->close();
             <form action="" method="get" class="d-flex justify-content-end">
                 <input type="hidden" name="privilegios" value="1">
                 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="privilegios" onchange="javascript:this.form.submit();">
-                    <option value="1" <?php if($_GET['privilegios'] == 1) echo "selected"?>>root</option>
-                    <option value="2" <?php if($_GET['privilegios'] == 2) echo "selected"?>>administradores</option>
+                    <option value="1" <?php if($privilegios == 1) echo "selected"?>>root</option>
+                    <option value="2" <?php if($privilegios == 2) echo "selected"?>>administradores</option>
                 </select>
             </form>
             </div>
