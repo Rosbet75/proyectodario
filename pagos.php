@@ -13,7 +13,7 @@
 <body>
 
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary color">
+<nav class="navbar navbar-expand-lg bg-body-tertiary color">
     <div class="container-fluid color">
       <a class="navbar-brand white" href="#">Eneto.Inc</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,9 +26,9 @@
               Admins
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="administradorAdmin.html">Crear Usuario Administrador</a>
+              <a class="dropdown-item" href="administradorAdmin.php">Crear Usuario Administrador</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="editareliminarAdministrador.html">Editar/Eliminar Usuario Administrador</a>
+              <a class="dropdown-item" href="editareliminarAdministrador.php">Editar/Eliminar Usuario Administrador</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -36,9 +36,9 @@
               Empleados
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="empleadosAdmin.html">Registrar Empleado</a>
+              <a class="dropdown-item" href="empleadosAdmin.php">Registrar Empleado</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="editareliminarEmpleado.html">Editar/Eliminar Empleado</a>
+              <a class="dropdown-item" href="editareliminarEmpleado.php">Editar/Eliminar Empleado</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -46,44 +46,30 @@
               Choferes
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="choferesAdmin.html">Registrar Chofer</a>
+              <a class="dropdown-item" href="choferesAdmin.php">Registrar Chofer</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="editareliminarChofer.html">Editar/Eliminar Chofer</a>
+              <a class="dropdown-item" href="editareliminarChofer.php">Editar/Eliminar Chofer</a>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="QuejasAdmin.html">Quejas</a>
+            <a class="nav-link white" href="QuejasAdmin.php">Quejas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="CitasAdmin.html">Citas</a>
+            <a class="nav-link white" href="CitasAdmin.php">Citas</a>
           </li>
           <li class="nav-item">
             <a class="nav-link white" href="pagos.html">Pagos</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Quejas
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Quejas
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
+                    <a class="nav-link dropdown-toggle white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Vehiculos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="vehiculosAdmin.php">Registrar Vehiculo</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="editareliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
+                    </div>
+                </li>
         </ul>
       </div>
     </div>
