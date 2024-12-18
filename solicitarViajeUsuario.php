@@ -26,7 +26,7 @@ if (isset($_POST['destino']) && isset($_POST['cuota'])) {
                   VALUES ('" . $conductor['idChofer'] . "', '$idUsuario', '$destino', '$costoViaje', '$cuotaGanancia', '" . $vehiculo['idMatricula'] . "')";
 
     if (mysqli_query($cnn, $sqlInsert)) {
-        echo "Viaje solicitado con éxito!";
+        echo "Viaje solicitado con exito!";
     } else {
         echo "Error al solicitar el viaje: " . mysqli_error($cnn);
     }
