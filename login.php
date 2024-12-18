@@ -33,7 +33,7 @@
         return $total > 0;
     }
     
-    if(isset($_COOKIE['log'])){
+    if(isset($_COOKIE['logeo'])){
         
         $cred = explode(":", $_COOKIE["logeo"]);
         
@@ -46,7 +46,6 @@
         
         $resultado = verificarCredenciales($_POST['username'], $_POST['contra']);
         if($resultado > 0){
-            
             setcookie("logeo", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", "127.0.0.1");
             header("Location: barra.php");
         }

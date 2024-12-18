@@ -89,7 +89,11 @@ create table reviews(idReview int primary key auto_increment,
                     updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
 create table tarjetas(numTar varchar(18) not null primary key,
                     fechaExp varchar(5) not null,
-                    cvv varchar(4) not null);
+                    cvv varchar(4) not null,
+                    nickname varchar(50) not null,
+                    foreign key(nickname) references usuarios(nickname),
+                    createdAt TIMESTAMP default CURRENT_TIMESTAMP,
+                    updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
 create table pagos(idPago int primary key auto_increment,
                     idTarjeta varchar(18) not null,
                     monto int not null,
