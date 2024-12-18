@@ -1,4 +1,93 @@
 <?php
+function verificarCredenciales($nickname, $contrasena) {
+  // Configuración de la base de datos
+  $servername = "localhost";
+  $username = "root";
+  $password = "eneto";
+  $dbname = "eneto";
+
+  // Crear conexión
+  $conn = new mysqli($servername, $username, $password, $dbname);
+
+  // Verificar si hubo errores en la conexión
+  if ($conn->connect_error) {
+      die("Conexión fallida: " . $conn->connect_error);
+  }
+
+  // Consulta SQL para verificar credenciales
+  $sql = "SELECT COUNT(*) AS total
+          FROM usuarios
+          WHERE nickname = ?
+            AND contra = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("ss", $nickname, $contrasena);
+  $stmt->execute();
+  $stmt->bind_result($total);
+  $stmt->fetch();
+
+  // Cerrar la consulta y conexión
+  $stmt->close();
+  $conn->close();
+
+  // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
+  return $total > 0;
+}
+function verificarCredencialesAdmin($nickname, $contrasena) {
+  // Configuración de la base de datos
+  $servername = "localhost";
+  $username = "root";
+  $password = "eneto";
+  $dbname = "eneto";
+
+  // Crear conexión
+  $conn = new mysqli($servername, $username, $password, $dbname);
+
+  // Verificar si hubo errores en la conexión
+  if ($conn->connect_error) {
+      die("Conexión fallida: " . $conn->connect_error);
+  }
+
+  // Consulta SQL para verificar credenciales
+  $sql = "SELECT COUNT(*) AS total
+          FROM admins
+          WHERE nickname = ?
+            AND contra = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("ss", $nickname, $contrasena);
+  $stmt->execute();
+  $stmt->bind_result($total);
+  $stmt->fetch();
+
+  // Cerrar la consulta y conexión
+  $stmt->close();
+  $conn->close();
+
+  // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
+  return $total > 0;
+}
+
+if(isset($_COOKIE['logeo'])){
+  $cred = explode(":", $_COOKIE["logeo"]);
+        
+  $resultado = verificarCredenciales($cred[0], $cred[1]);
+  
+  if($resultado > 0){
+      header("Location: barra.php");
+      exit;
+  }
+  $resultado = verificarCredencialesAdmin($cred[0], $cred[1]);
+  if($resultado > 0){
+    if(isset($_POST['unlog'])){
+        setcookie("logeo", "", time() - 3600, "/", "127.0.0.1");
+        header("Location: login.php");
+        exit;
+      }
+  }
+} else {
+  header("Location: login.php");
+  exit;
+}
+//------------------------------------------------------------------------------------------------
 $cnn = mysqli_connect("localhost", "root", "eneto", "eneto");
 
 if (!$cnn) {
@@ -122,6 +211,12 @@ if (!$result) {
                         <a class="dropdown-item" href="editareliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
                     </div>
                 </li>
+            <li class="nav-item">
+            <form action="" method="post" name="logout" id="logout">
+              <input type="hidden" value="1" name="unlog">
+              <button type='submit' form='logout' class='btn color white'>Log out</button>
+            </form>
+          </li>
         </ul>
       </div>
     </div>

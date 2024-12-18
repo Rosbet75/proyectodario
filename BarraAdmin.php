@@ -160,7 +160,12 @@ if(isset($_COOKIE['logeo'])){
                         <a class="dropdown-item" href="editareliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
                     </div>
                 </li>
-                
+            <li class="nav-item">
+            <form action="" method="post" name="logout" id="logout">
+              <input type="hidden" value="1" name="unlog">
+              <button type='submit' form='logout' class='btn color white'>Log out</button>
+            </form>
+          </li>
         </ul>
       </div>
     </div>

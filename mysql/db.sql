@@ -35,7 +35,7 @@ create table empleados(curp varchar(18) not null primary key,
                     createdAt TIMESTAMP default CURRENT_TIMESTAMP,
                     updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP,
                     foreign key(idCargo) references cargoLaboral(idCargo) on delete cascade on update cascade);
-
+insert into empleados values("enetoenetoeneto", "eneto", "eneto", "eneto", 1, "08:00:00", "17:00:00", default, default);
 create table admins(nickname varchar(50) primary key not null,
                     correo varchar(100) not null,
                     contra varchar(100) not null,
@@ -45,6 +45,7 @@ create table admins(nickname varchar(50) primary key not null,
                     updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP,
                     foreign key(curp) references empleados(curp) on delete cascade on update cascade,
                     Foreign Key(privilegios) REFERENCES privilegios(idPriv) on delete cascade on update cascade);
+insert into admins values("root", "root@root", "eneto", "enetoenetoeneto", 1,default, default);
 create table vehiculos(idMatricula varchar(8) primary key not null,
                     anoVehiculo varchar(4) not null,
                     modelo varchar(20) not null,
