@@ -39,7 +39,7 @@ if(isset($_COOKIE['pase'])){
 } else if(isset($_POST['login'])){
     $resultado = verificarCredenciales($_POST['username'], $_POST['contra']);
     if($resultado){
-        setcookie($_POST['username'], $_POST['contra'], time() + 3600, "/", "localhost");
+        setcookie("log", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", "localhost");
     }
 }
 ?>
