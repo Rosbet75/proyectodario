@@ -168,6 +168,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
 </div>
 ";
 };
+$cnn->close();
 ?>
 
 <!DOCTYPE html>

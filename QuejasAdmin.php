@@ -39,7 +39,24 @@ if(isset($_POST['actualizar'])){
         echo "Error al eliminar la queja: " . $cnn->error;
     }
 } else if (isset($_POST['marcar'])){
-  $del = $cnn->query("DELETE FROM queja WHERE idQueja = '{$_POST['quejaId']}';");
+  $del = $cnn->query("update queja set atendido = TRUE WHERE idQueja = '{$_POST['quejaId']}';");
+  if ($del) {
+    echo "Queja marcada correctamente.";
+  } else {
+    echo "Error al marcas queja: " . $cnn->error;
+  }
+} else if (isset($_POST['citacion'])){
+  $sancion = $_POST['sancion'] == "" ? null : $_POST['sancion'];
+  $conceptoCita = $_POST['conceptoCita'] == "" ? null : $_POST['conceptoCita'];
+  $stmt = $cnn->prepare("INSERT INTO citas (idChofer, fechaCita, concepto, comentarios, idQueja, sancion) VALUES (?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param("isssii", $_POST['idChofer'], $_POST['fechaCita'], $conceptoCita, $_POST['comentario'], $_POST['quejaId'], $sancion);
+
+    if ($stmt->execute()) {
+        echo "Admin actualizado correctamente.";
+    } else {
+        echo "Error al actualizar el admin: " . $stmt->error;
+    }
+    $del = $cnn->query("update queja set atendido = TRUE WHERE idQueja = '{$_POST['quejaId']}';");
   if ($del) {
     echo "Queja marcada correctamente.";
   } else {
@@ -74,12 +91,17 @@ if ($recientes == "1") {
 
 $consul = $cnn->query($meagarras);
 $tablas = "";
+
 while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
 
  $pendiente = $ren['atendido'] == 0 ? "Pendiente" : "Atendido";
  $marcador = "";
  if($ren['atendido'] == 0){
-  $marcador = "<form method='post' name='marcAtend'>
+  $marcador = "<button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#modalCita{$ren['idQueja']}'>
+                  Citar
+                </button>                
+                <button class='btn btn-primary btn-danger ms-2' data-bs-toggle='modal' data-bs-target='#modalSancion{$ren['idQueja']}'>Sancionar</button>
+  <form method='post' name='marcAtend'>
                   <input type='hidden' name='quejaId' value='{$ren['idQueja']}'>
                   <input type='hidden' name='marcar' value='1'>
                   <button class='btn btn-primary btn-success ms-2'>Marcar como atendido</button>
@@ -113,10 +135,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
                 <label for=''>Chofer: {$ren['nombre']} {$ren['apellidoPaterno']} {$ren['apellidoMaterno']}</label>
               </div>
               <div class='d-flex justify-content-end'>
-                <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#modalCita{$ren['idQueja']}'>
-                  Citar
-                </button>                
-                <button class='btn btn-primary btn-danger ms-2' data-bs-toggle='modal' data-bs-target='#modalSancion{$ren['idQueja']}'>Sancionar</button>
+                
                 {$marcador}
               </div>
             </div>
@@ -155,7 +174,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
               <div class='row mb-3'>
                 <div class='col-md-6'>
                   <label for='concepto' class='form-label'>Concepto</label>
-                  <select class='form-select' id='concepto' required name='conceptoCita'>
+                  <select class='form-select' id='concepto' name='conceptoCita'>
                     <option value=''>Seleccionar concepto</option>
                     {$opcionesCitas}
                   
@@ -164,7 +183,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
                 </div>
                 <div class='col-md-6'>
                   <label for='sancion' class='form-label'>Sancion</label>
-                  <select class='form-select' id='sancion' required name='conceptoSancion'>
+                  <select class='form-select' id='sancion' name='sancion'>
                     <option value=''>Seleccionar sancion</option>
                     {$opcionesSancion}
 
@@ -176,12 +195,13 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
                 <label for='comentarios' class='form-label'>Comentarios</label>
                 <textarea class='form-control' id='comentarios' rows='4' required name='comentario'></textarea>
               </div>
-            </form>
+            
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancelar</button>
             <button type='submit' form='formCita' class='btn color white'>Guardar Cita</button>
           </div>
+          </form>
         </div>
       </div>
     </div>
@@ -284,6 +304,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
     </div>
 
 ";
+
 };
 
 ?>
