@@ -32,16 +32,21 @@
         // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
         return $total > 0;
     }
-
     
-if(isset($_COOKIE['pase'])){
+    if(isset($_COOKIE['pase'])){
+        $cred = explode(":", $_COOKIE["log"]);
+        
+        $resultado = verificarCredenciales($cred[0], $cred[1]);
+        if($resultado){
+            header("Location: BarraAdmin.php");
+        }
+    } else if(isset($_POST['login'])){
+        $resultado = verificarCredenciales($_POST['username'], $_POST['contra']);
+        if($resultado){
+            setcookie("log", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", "localhost");
 
-} else if(isset($_POST['login'])){
-    $resultado = verificarCredenciales($_POST['username'], $_POST['contra']);
-    if($resultado){
-        setcookie("log", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", "localhost");
+        }
     }
-}
 ?>
 <html lang="en">
 <head>
