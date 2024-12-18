@@ -260,13 +260,13 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
             <input type="hidden" name="viajes" value="1">
             <input type="hidden" name="quejas" value="1">
             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="viajes" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
-              <option value="1" <?php if($_GET['viajes'] == 1) echo "selected"?>>Mas viajes primero</option>
-              <option value="2" <?php if($_GET['viajes'] == 2) echo "selected"?>>Menos viajes primero</option>
+              <option value="1" <?php if($viajes == 1) echo "selected"?>>Mas viajes primero</option>
+              <option value="2" <?php if($viajes == 2) echo "selected"?>>Menos viajes primero</option>
             </select>
             
             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="quejas" onchange="javascript:this.form.submit(); console.log('Form submitted!')">
-              <option value="1" <?php if($_GET['quejas'] == 1) echo "selected"?>>Mas quejas primero</option>
-              <option value="2" <?php if($_GET['quejas'] == 2) echo "selected"?>>Menos quejas primero</option>
+              <option value="1" <?php if($quejas == 1) echo "selected"?>>Mas quejas primero</option>
+              <option value="2" <?php if($quejas == 2) echo "selected"?>>Menos quejas primero</option>
             </select>
             
           </form>
