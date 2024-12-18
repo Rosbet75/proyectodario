@@ -69,8 +69,13 @@ function verificarCredencialesAdmin($nickname, $contrasena) {
 if(isset($_COOKIE['logeo'])){
   $cred = explode(":", $_COOKIE["logeo"]);
         
-  $resultado = verificarCredenciales($cred[0], $cred[1]);
   
+  $resultado = verificarCredenciales($cred[0], $cred[1]);
+  if ($resultado) {
+    echo htmlspecialchars($cred[0]); //aqui esta el nickname alfin
+   
+}
+
   if($resultado > 0){
       if(isset($_POST['unlog'])){
         setcookie("logeo", "", time() - 3600, "/", "localhost");
