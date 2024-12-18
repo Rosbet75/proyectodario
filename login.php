@@ -35,9 +35,10 @@
     
     if(isset($_COOKIE['log'])){
         
-        $cred = explode(":", $_COOKIE["log"]);
+        $cred = explode(":", $_COOKIE["logeo"]);
         
         $resultado = verificarCredenciales($cred[0], $cred[1]);
+        
         if($resultado > 0){
             header("Location: barra.php");
         }
@@ -45,9 +46,9 @@
         
         $resultado = verificarCredenciales($_POST['username'], $_POST['contra']);
         if($resultado > 0){
-            echo "Acummeeeeeo.";
-            setcookie("log", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", "localhost");
-            header("Location: barra.php");
+            
+            setcookie("logeo", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", "localhost");
+            // header("Location: barra.php");
         }
     }
 ?>
