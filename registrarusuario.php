@@ -71,15 +71,15 @@ mysqli_close($cnn);
                             </div>
                             <div class="form-group">
                                 <label for="apellidoPaterno">Apellido Paterno</label>
-                                <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno" placeholder="Ingresa tu apellido paterno" required>
+                                <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno" placeholder="Ingresa tu apellido paterno" onkeypress="permitirSoloLetras(event)" required>
                             </div>
                             <div class="form-group">
                                 <label for="apellidomaterno">Apellido Materno</label>
-                                <input type="text" class="form-control" id="apellidomaterno" name="apellidomaterno" placeholder="Ingresa tu apellido materno" required>
+                                <input type="text" class="form-control" id="apellidomaterno" name="apellidomaterno" placeholder="Ingresa tu apellido materno" onkeypress="permitirSoloLetras(event)" required>
                             </div>
                             <div class="form-group">
                                 <label for="nombre">Nombre(s)</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresa tu nombre" onkeypress="permitirSoloLetras(event)" required>
                             </div>
                             <div class="form-group">
                                 <label for="correo">Correo Electronico</label>
