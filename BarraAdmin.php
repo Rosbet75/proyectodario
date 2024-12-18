@@ -1,7 +1,7 @@
 <?php
 
 if(isset($_COOKIE['log'])){
-
+    
 } else {
     header("Location: choferesAdmin.php");
 }

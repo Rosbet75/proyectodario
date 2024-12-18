@@ -18,7 +18,7 @@
         $sql = "SELECT COUNT(*) AS total
                 FROM usuarios
                 WHERE nickname = ?
-                  AND contrasena = ?";
+                  AND contra = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ss", $nickname, $contrasena);
         $stmt->execute();
@@ -33,18 +33,19 @@
         return $total > 0;
     }
     
-    if(isset($_COOKIE['pase'])){
+    if(isset($_COOKIE['log'])){
+        
         $cred = explode(":", $_COOKIE["log"]);
         
         $resultado = verificarCredenciales($cred[0], $cred[1]);
-        if($resultado){
-            header("Location: BarraAdmin.php");
+        if($resultado > 0){
+            header("Location: barra.php");
         }
     } else if(isset($_POST['login'])){
+        
         $resultado = verificarCredenciales($_POST['username'], $_POST['contra']);
-        if($resultado){
+        if($resultado > 0){
             setcookie("log", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", "localhost");
-
         }
     }
 ?>
@@ -61,7 +62,7 @@
     <br>
     <br>
     <br>
-    <h6 class="text-succes text-center">No solucionamos tus prooblemas pero te llevamos mas rapido a ellos</h6>
+    <h6 class="text-succes text-center">No solucionamos tus problemas pero te llevamos mas rapido a ellos</h6>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
