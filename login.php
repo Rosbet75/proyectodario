@@ -45,7 +45,9 @@
         
         $resultado = verificarCredenciales($_POST['username'], $_POST['contra']);
         if($resultado > 0){
+            echo "Acummeeeeeo.";
             setcookie("log", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", "localhost");
+            header("Location: barra.php");
         }
     }
 ?>
