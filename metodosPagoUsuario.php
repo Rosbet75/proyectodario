@@ -87,6 +87,7 @@ function verificarCredenciales($nickname, $contrasena) {
     header("Location: login.php");
     exit;
   }
+//-----------------------------------------------------------------------------------
 $cnn = new mysqli("localhost", "root", "eneto", "eneto");
 
 if ($cnn->connect_error) {
