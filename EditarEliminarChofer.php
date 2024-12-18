@@ -175,7 +175,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
 ";
 
 };
-$cnn->close();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
