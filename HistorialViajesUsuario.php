@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/barra.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary color">
+<nav class="navbar navbar-expand-lg bg-body-tertiary color">
     <div class="container-fluid color">
       <a class="navbar-brand white" href="#">Eneto.Inc</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,20 +18,21 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav color">
           <li class="nav-item">
-            <a class="nav-link white" aria-current="page" href="solicitarViajeUsuario.html">Solicitar viaje</a>
+            <a class="nav-link white" aria-current="page" href="solicitarViajeUsuario.php">Solicitar viaje</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="historialViajesUsuario.html">Historial de viajes</a>
+            <a class="nav-link white" href="historialViajesUsuario.php">Historial de viajes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="metodosPagoUsuario.html">Metodos de pago</a>
+            <a class="nav-link white" href="metodosPagoUsuario.php">Metodos de pago</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="miperfil.html">Mi perfil</a>
+            <a class="nav-link white" href="miperfil.php">Mi perfil</a>
           </li>
         </ul>
       </div>
     </div>
+  </nav>
   </nav>
       <br>
       <div class="container-fluid">

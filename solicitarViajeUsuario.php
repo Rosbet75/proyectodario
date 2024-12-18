@@ -54,16 +54,16 @@ if (isset($_POST['destino']) && isset($_POST['cuota'])) {
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav color">
           <li class="nav-item">
-            <a class="nav-link white" aria-current="page" href="solicitarViajeUsuario.html">Solicitar viaje</a>
+            <a class="nav-link white" aria-current="page" href="solicitarViajeUsuario.php">Solicitar viaje</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="historialViajesUsuario.html">Historial de viajes</a>
+            <a class="nav-link white" href="historialViajesUsuario.php">Historial de viajes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="metodosPagoUsuario.html">Metodos de pago</a>
+            <a class="nav-link white" href="metodosPagoUsuario.php">Metodos de pago</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="miperfil.html">Mi perfil</a>
+            <a class="nav-link white" href="miperfil.php">Mi perfil</a>
           </li>
         </ul>
       </div>
