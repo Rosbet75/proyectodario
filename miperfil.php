@@ -1,19 +1,20 @@
-
-
 <?php
-
 function verificarCredenciales($nickname, $contrasena) {
+  // Configuración de la base de datos
   $servername = "localhost";
   $username = "root";
   $password = "eneto";
   $dbname = "eneto";
 
+  // Crear conexión
   $conn = new mysqli($servername, $username, $password, $dbname);
 
+  // Verificar si hubo errores en la conexión
   if ($conn->connect_error) {
       die("Conexión fallida: " . $conn->connect_error);
   }
 
+  // Consulta SQL para verificar credenciales
   $sql = "SELECT COUNT(*) AS total
           FROM usuarios
           WHERE nickname = ?
@@ -24,23 +25,29 @@ function verificarCredenciales($nickname, $contrasena) {
   $stmt->bind_result($total);
   $stmt->fetch();
 
+  // Cerrar la consulta y conexión
   $stmt->close();
   $conn->close();
 
+  // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
   return $total > 0;
 }
 function verificarCredencialesAdmin($nickname, $contrasena) {
+  // Configuración de la base de datos
   $servername = "localhost";
   $username = "root";
   $password = "eneto";
   $dbname = "eneto";
 
+  // Crear conexión
   $conn = new mysqli($servername, $username, $password, $dbname);
 
+  // Verificar si hubo errores en la conexión
   if ($conn->connect_error) {
       die("Conexión fallida: " . $conn->connect_error);
   }
 
+  // Consulta SQL para verificar credenciales
   $sql = "SELECT COUNT(*) AS total
           FROM admins
           WHERE nickname = ?
@@ -51,22 +58,26 @@ function verificarCredencialesAdmin($nickname, $contrasena) {
   $stmt->bind_result($total);
   $stmt->fetch();
 
+  // Cerrar la consulta y conexión
   $stmt->close();
   $conn->close();
 
+  // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
   return $total > 0;
 }
 
-if(isset($_COOKIE['logeo'])){
+
+if (isset($_COOKIE['logeo'])) {
   $cred = explode(":", $_COOKIE["logeo"]);
-        
   
   $resultado = verificarCredenciales($cred[0], $cred[1]);
+  
   if ($resultado) {
-    echo htmlspecialchars($cred[0]); //aqui esta el nickname alfin
-   
-}
-
+      echo htmlspecialchars($cred[0]); //aqui esta el nickname alfin
+     
+  }
+  $resultado = verificarCredenciales($cred[0], $cred[1]);
+  
   if($resultado > 0){
       if(isset($_POST['unlog'])){
         setcookie("logeo", "", time() - 3600, "/", $_SERVER['SERVER_ADDR']);
@@ -83,115 +94,76 @@ if(isset($_COOKIE['logeo'])){
   header("Location: login.php");
   exit;
 }
+//---------------------------------------------------------------------------------
+$cnn = new mysqli("localhost", "root", "eneto", "eneto");
 
-function obtenerDatosUsuario($nickname) {
-    $servername = "localhost";
-    $username = "root";
-    $password = "eneto";
-    $dbname = "eneto";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Conexion fallida: " . $conn->connect_error);
-    }
-
-    $sql = "SELECT nombre, apellidoPaterno, apellidomaterno, sexo, correo
-            FROM usuarios
-            WHERE nickname = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $nickname);
-    $stmt->execute();
-    $stmt->bind_result($nombre, $apellidoPaterno, $apellidoMaterno, $sexo, $correo);
-    $stmt->fetch();
-
-    $stmt->close();
-    $conn->close();
-
-    return [
-        'nombre' => $nombre,
-        'apellidoPaterno' => $apellidoPaterno,
-        'apellidoMaterno' => $apellidoMaterno,
-        'sexo' => $sexo,
-        'correo' => $correo
-    ];
+if ($cnn->connect_error) {
+    die("Error de conexion: " . $cnn->connect_error);
 }
+$cred = explode(":", $_COOKIE["logeo"]);
+  
 
-function actualizarDatosUsuario($nickname, $nombre, $apellidoPaterno, $apellidoMaterno, $sexo, $correo, $contrasenaActual, $nuevaContrasena) {
-    $servername = "localhost";
-    $username = "root";
-    $password = "eneto";
-    $dbname = "eneto";
+$consul = $cnn->query("SELECT * from usuarios where nickname = '". $cred[0] . "';");
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+$tablas = "";
+$ren = $consul -> fetch_array(MYSQLI_ASSOC);
+if (isset($_POST['nombre'])) {
+  // Base SQL query
+  $meagarras = "UPDATE usuarios SET ";
+  $params = [];
+  $types = ""; 
+  if (!empty($_POST['apellidoMaterno'])) {
+      $meagarras .= "apellidomaterno = ?, ";
+      $params[] = $_POST['apellidoMaterno'];
+      $types .= "s";
+  }
+  if (!empty($_POST['apellidoPaterno'])) {
+      $meagarras .= "apellidoPaterno = ?, ";
+      $params[] = $_POST['apellidoPaterno'];
+      $types .= "s";
+  }
+  if (!empty($_POST['nombre'])) {
+      $meagarras .= "nombre = ?, ";
+      $params[] = $_POST['nombre'];
+      $types .= "s";
+  }
+  if (!empty($_POST['sexo'])) {
+      $meagarras .= "sexo = ?, ";
+      $params[] = $_POST['sexo'];
+      $types .= "s";
+  }
+  if (!empty($_POST['correo'])) {
+      $meagarras .= "correo = ?, ";
+      $params[] = $_POST['correo'];
+      $types .= "s";
+  }
+  if (!empty($_POST['nuevaCon']) && $_POST['nuevaCon'] === $_POST['confCon']) {
+      $meagarras .= "contra = ?, ";
+      $params[] = $_POST['nuevaCon'];
+      $types .= "s";
+  }
 
-    if ($conn->connect_error) {
-        die("Conexion fallida: " . $conn->connect_error);
-    }
+  
+  $meagarras = rtrim($meagarras, ", ") . " WHERE nickname = ?";
+  $params[] = $_POST['nickname'];
+  $types .= "s";
 
-    $sql = "SELECT contra FROM usuarios WHERE nickname = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $nickname);
-    $stmt->execute();
-    $stmt->bind_result($contraActual);
-    $stmt->fetch();
-    $stmt->close();
+  
+  $stmt = $cnn->prepare($meagarras);
+  if ($stmt === false) {
+      die("Error preparando statement: " . $cnn->error);
+  }
 
-    if ($contrasenaActual && $contrasenaActual === $contraActual) {
-        if ($nuevaContrasena) {
-            $sql = "UPDATE usuarios SET nombre = ?, apellidoPaterno = ?, apellidomaterno = ?, sexo = ?, correo = ?, contra = ? WHERE nickname = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssssss", $nombre, $apellidoPaterno, $apellidoMaterno, $sexo, $correo, $nuevaContrasena, $nickname);
-        } else {
-            $sql = "UPDATE usuarios SET nombre = ?, apellidoPaterno = ?, apellidomaterno = ?, sexo = ?, correo = ? WHERE nickname = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssssss", $nombre, $apellidoPaterno, $apellidoMaterno, $sexo, $correo, $nickname);
-        }
-        $stmt->execute();
-        $stmt->close();
-    } else {
-        echo "Contrasena actual incorrecta.";
-    }
+  $stmt->bind_param($types, ...$params);
 
-    $conn->close();
+  if ($stmt->execute()) {
+      echo "Usuario actualizado exitosamente.";
+  } else {
+      echo "Error ACtualizando usuario: " . $stmt->error;
+  }
+
+  $stmt->close();
 }
-
-if (isset($_COOKIE['logeo'])) {
-    $cred = explode(":", $_COOKIE["logeo"]);
-    $nickname = $cred[0];
-
-    $usuario = obtenerDatosUsuario($nickname);
-
-    $servername = "localhost";
-    $username = "root";
-    $password = "eneto";
-    $dbname = "eneto";
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    $sql = "SELECT contra FROM usuarios WHERE nickname = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $nickname);
-    $stmt->execute();
-    $stmt->bind_result($contraUsuario);
-    $stmt->fetch();
-    $stmt->close();
-    $conn->close();
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : $usuario['nombre'];
-        $apellidoPaterno = isset($_POST['apellidoPaterno']) ? $_POST['apellidoPaterno'] : $usuario['apellidoPaterno'];
-        $apellidoMaterno = isset($_POST['apellidoMaterno']) ? $_POST['apellidoMaterno'] : $usuario['apellidoMaterno'];
-        $sexo = isset($_POST['sexo']) ? $_POST['sexo'] : $usuario['sexo'];
-        $correo = isset($_POST['correo']) ? $_POST['correo'] : $usuario['correo'];
-        $contrasenaActual = isset($_POST['contrasenaActual']) ? $_POST['contrasenaActual'] : null;
-        $nuevaContrasena = isset($_POST['nuevaContrasena']) && $_POST['nuevaContrasena'] ? $_POST['nuevaContrasena'] : null;
-
-        actualizarDatosUsuario($nickname, $nombre, $apellidoPaterno, $apellidoMaterno, $sexo, $correo, $contrasenaActual, $nuevaContrasena);
-    }
-} else {
-    header("Location: login.php");
-    exit;
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -240,47 +212,47 @@ if (isset($_COOKIE['logeo'])) {
                     <form id="perfil" method="POST">
                         <div class="form-group">
                             <label for="nickname">Nickname</label>
-                            <input type="text" class="form-control" id="nickname" value="<?php echo htmlspecialchars($nickname); ?>" readonly>
+                            <input type="text" class="form-control" id="nickname" value="<?php echo $ren['nickname']?>" readonly name="nickname">
                         </div>
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" value="<?php echo htmlspecialchars($usuario['nombre']); ?>" required>
+                            <input type="text" class="form-control" id="nombre" value="<?php echo $ren['nombre']?>" name="nombre">
                         </div>
                         <div class="form-group">
                             <label for="apellidoPaterno">Apellido Paterno</label>
-                            <input type="text" class="form-control" id="apellidoPaterno" value="<?php echo htmlspecialchars($usuario['apellidoPaterno']); ?>" required>
+                            <input type="text" class="form-control" id="apellidoPaterno" value="<?php echo $ren['apellidoPaterno']?>" name="apellidoMaterno">
                         </div>
                         <div class="form-group">
                             <label for="apellidoMaterno">Apellido Materno</label>
-                            <input type="text" class="form-control" id="apellidoMaterno" value="<?php echo htmlspecialchars($usuario['apellidoMaterno']); ?>" required>
+                            <input type="text" class="form-control" id="apellidoMaterno" value="<?php echo $ren['apellidomaterno']?>" name="apellidoPaterno">
                         </div>
                         <div class="form-group">
                             <label for="sexo">Sexo</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sexo" id="masculino" value="M" <?php echo $usuario['sexo'] === 'M' ? 'checked' : ''; ?>>
+                                <input class="form-check-input" type="radio" name="sexo" id="masculino" value="Masculino" <?php echo $ren['sexo'] == 'Masculino' ? 'checked' : ''; ?>>
                                 <label class="form-check-label" for="masculino">Masculino</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sexo" id="femenino" value="F" <?php echo $usuario['sexo'] === 'F' ? 'checked' : ''; ?>>
+                                <input class="form-check-input" type="radio" name="sexo" id="femenino" value="Femenino" <?php echo $ren['sexo'] == 'Femenino' ? 'checked' : ''; ?>>
                                 <label class="form-check-label" for="femenino">Femenino</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="correo">Correo Electronico</label>
-                            <input type="email" class="form-control" id="correo" value="<?php echo htmlspecialchars($usuario['correo']); ?>" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contrasenaActual">Contrasena Actual</label>
-                            <input type="password" class="form-control" id="contrasenaActual" required>
+                            <input type="email" class="form-control" id="correo" value="<?php echo $ren['correo']?>" required>
                         </div>
                         <h2 class="mt-4">Cambiar Contrasena</h2>
                         <div class="form-group">
+                            <label for="contrasenaActual">Contrasena Actual</label>
+                            <input type="password" class="form-control" id="contrasenaActual" required name="contrapres">
+                        </div>
+                        <div class="form-group">
                             <label for="nuevaContrasena">Nueva Contrasena</label>
-                            <input type="password" class="form-control" id="nuevaContrasena" oninput="verificarContrasenas()">
+                            <input type="password" class="form-control" id="nuevaContrasena" oninput="verificarContrasenas()" name="nuevaCon">
                         </div>
                         <div class="form-group">
                             <label for="confirmarContrasena">Confirmar Nueva Contrasena</label>
-                            <input type="password" class="form-control" id="confirmarContrasena" oninput="verificarContrasenas()">
+                            <input type="password" class="form-control" id="confirmarContrasena" oninput="verificarContrasenas()" name="confCon">
                             <div id="mensajeContrasena" style="font-size: 0.875em; margin-top: 5px;"></div>
                         </div>
 

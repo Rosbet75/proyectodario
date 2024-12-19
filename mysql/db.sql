@@ -247,4 +247,4 @@ LEFT JOIN
 GROUP BY 
     c.idChofer, e.nombre, e.apellidoPaterno, e.apellidoMaterno, c.num_licencia;
 
-select * from admins;
+select * from usuarios;
