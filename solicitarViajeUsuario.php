@@ -72,7 +72,7 @@ if(isset($_COOKIE['logeo'])){
   
   $resultado = verificarCredenciales($cred[0], $cred[1]);
   if ($resultado) {
-    echo htmlspecialchars($cred[0]); //aqui esta el nickname alfin
+    //echo htmlspecialchars($cred[0]); //aqui esta el nickname alfin
    
 }
 
@@ -109,21 +109,63 @@ $conductor = mysqli_fetch_assoc($resultConductor);
 $sqlVehiculo = "SELECT * FROM vehiculos WHERE disponible = 1 ORDER BY RAND() LIMIT 1";
 $resultVehiculo = mysqli_query($cnn, $sqlVehiculo);
 $vehiculo = mysqli_fetch_assoc($resultVehiculo);
-
+$costoViaje = 80;
+$cuotaGanacia = 20;
 if (isset($_POST['destino']) && isset($_POST['cuota'])) {
-    $idUsuario = 1; 
+    $idUsuario = explode(":", $_COOKIE['logeo'])[0];
     $destino = $_POST['destino'];
-    $costoViaje = 100;
-    $cuotaGanancia = $_POST['cuota'];
+    
 
-    $sqlInsert = "INSERT INTO viajes (idChofer, idUsuario, destino, costo_viaje, cuota_ganancia, idMatricula)
-                  VALUES ('" . $conductor['idChofer'] . "', '$idUsuario', '$destino', '$costoViaje', '$cuotaGanancia', '" . $vehiculo['idMatricula'] . "')";
+    
+    $chofMat = explode(' (Licencia: ', $_POST['conductor']);
+    $cueroChofer = "select idChofer from choferes where curp = ?";
+    $choferStmt = $cnn -> prepare($cueroChofer);
+    $choferStmt -> bind_param("s", $chofMat[0]);
+    if (!$choferStmt->execute()) {
+      die("Error al ejecutar la consulta: " . $stmt->error);
+  }
+    
+    $chofId;
+    $choferStmt->bind_result($chofId);
+    $choferStmt -> fetch();
+    $choferStmt -> close();
 
-    if (mysqli_query($cnn, $sqlInsert)) {
+    
+    $sql = "INSERT INTO viajes (idChofer, idUsuario, destino, costo_viaje, cuota_ganancia, idMatricula) values (?, ?, ?, ?, ?, ?);";
+    $stmt = $cnn -> prepare($sql);
+    $idMatricula = rtrim($chofMat[1], ")");
+    
+    $stmt -> bind_param("issiis",$chofId, $idUsuario, $destino, $costoViaje, $cuotaGanacia, $_POST['matricula']);
+    echo "\n";
+    if ($stmt -> execute()) {
         echo "Viaje solicitado con exito!";
     } else {
         echo "Error al solicitar el viaje: " . mysqli_error($cnn);
     }
+    
+    $sqlviajes = "SELECT * FROM viajes
+ORDER BY createdAt DESC
+LIMIT 1;";
+    $idviaje;
+    $resultviajes = mysqli_query($cnn, $sqlviajes);
+    if (mysqli_num_rows($resultTarjetas) > 0) {
+      while($row = mysqli_fetch_assoc($resultviajes)) {
+          $idViaje = $row['idViaje'];
+      }
+  }
+    $pagoCuero = "insert into pagos (idTarjeta, monto, idViaje, estadoPago) values(?,?,?,?);";
+    $pagoStmt = $cnn-> prepare($pagoCuero);
+    $total = ($cuotaGanacia + $costoViaje);
+    $estadoPago = "TRUE";
+    $pagoStmt -> bind_param("siii", $_POST['tarjeta'], $total, $idViaje, $estadoPago);
+    if ($pagoStmt -> execute()) {
+      echo "\n";
+      echo "Pago registrado con exito!";
+  } else {
+      echo "Error al registrar el pago: " . mysqli_error($cnn);
+  }
+    
+    
 }
 ?>
 
@@ -181,6 +223,7 @@ if (isset($_POST['destino']) && isset($_POST['cuota'])) {
         <div>
             <br>
             <label for="tarjeta" class="form-label">Tarjeta seleccionada</label>
+            <input type="hidden" name="tarjeta" value="<?php $row['numtar']?>">
             <select id="tarjeta" class="form-control" name="tarjeta" required>
                 <option value="" disabled selected>Selecciona una tarjeta</option>
                 <?php
@@ -198,10 +241,12 @@ if (isset($_POST['destino']) && isset($_POST['cuota'])) {
         <div>
             <br>
             <label for="conductor" class="form-label">Conductor asignado</label>
+            <input type="hidden" name="chofer" value="<?php echo $conductor['idChofer']?>">"
             <input type="text" class="form-control" id="conductor" name="conductor" value="<?php echo $conductor['curp'] . ' (Licencia: ' . $conductor['num_licencia'] . ')'; ?>" readonly>
         </div>
         <div>
             <br>
+            <input type="hidden" name="matricula" value="<?php echo $vehiculo['idMatricula']?>">
             <label for="vehiculo" class="form-label">Vehículo asignado</label>
             <input type="text" class="form-control" id="vehiculo" name="vehiculo" value="<?php echo $vehiculo['modelo'] . ' - ' . $vehiculo['color'] . ' (' . $vehiculo['anoVehiculo'] . ')'; ?>" readonly>
         </div>
@@ -213,7 +258,7 @@ if (isset($_POST['destino']) && isset($_POST['cuota'])) {
         <div>
             <br>
             <label for="cuota" class="form-label">Cuota</label>
-            <input type="text" class="form-control ancho-input" id="cuota" name="cuota" placeholder="80" required>
+            <input type="text" class="form-control ancho-input" id="cuota" name="cuota" placeholder="80" value = " <?php echo ($cuotaGanacia + $costoViaje)?>"required readonly>
         </div>
 
         <br>

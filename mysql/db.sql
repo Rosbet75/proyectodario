@@ -191,6 +191,7 @@ VALUES
 ('user3', 'López', 'García', 'Ana', 'Femenino', 'ana@mail.com', 'password123'),
 ('user4', 'Ramírez', 'Díaz', 'Jorge', 'Masculino', 'jorge@mail.com', 'password123'),
 ('user5', 'Fernández', 'Sánchez', 'María', 'Femenino', 'maria@mail.com', 'password123');
+insert into tarjetas(numtar, fechaExp, cvv, nickname) values ("111111111111111111", "05/26", "4444", "user1");
 INSERT INTO vehiculos (idMatricula, anoVehiculo, modelo, plazas, color, disponible)
 VALUES
 ('MAT12345', '2022', 'Toyota Corolla', 5, 'Blanco', 1),
@@ -247,4 +248,4 @@ LEFT JOIN
 GROUP BY 
     c.idChofer, e.nombre, e.apellidoPaterno, e.apellidoMaterno, c.num_licencia;
 
-select * from usuarios;
+select * from viajes;

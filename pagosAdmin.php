@@ -59,11 +59,11 @@ function verificarCredenciales($nickname, $contrasena) {
     $stmt->bind_result($total);
     $stmt->fetch();
   
-    // Cerrar la consulta y conexión
+    
     $stmt->close();
     $conn->close();
   
-    // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
+   
     return $total > 0;
   }
   
