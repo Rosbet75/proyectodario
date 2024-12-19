@@ -88,7 +88,8 @@ create table reviews(idReview int primary key auto_increment,
                     foreign key (idViaje) references viajes(idViaje)on delete cascade on update cascade,
                     createdAt TIMESTAMP default CURRENT_TIMESTAMP,
                     updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
-create table tarjetas(numTar varchar(18) not null primary key,
+create table tarjetas(idTarjeta int not null primary key auto_increment,
+                    numTar varchar(18) not null,
                     fechaExp varchar(5) not null,
                     cvv varchar(4) not null,
                     nickname varchar(50) not null,
@@ -96,11 +97,11 @@ create table tarjetas(numTar varchar(18) not null primary key,
                     createdAt TIMESTAMP default CURRENT_TIMESTAMP,
                     updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
 create table pagos(idPago int primary key auto_increment,
-                    idTarjeta varchar(18) not null,
+                    idTarjeta int not null,
                     monto int not null,
                     idViaje int not null,
                     estadoPago boolean not null,
-                    foreign key(idTarjeta) references tarjetas(numTar) on delete cascade on update cascade,
+                    foreign key(idTarjeta) references tarjetas(idTarjeta) on delete cascade on update cascade,
                     foreign key(idViaje) references viajes(idViaje) on delete cascade on update cascade,
                     createdAt TIMESTAMP default CURRENT_TIMESTAMP,
                     updatedAt timestamp default current_timestamp on update CURRENT_TIMESTAMP);
@@ -228,6 +229,20 @@ VALUES
 ('admin3', 'admin3@mail.com', 'adminpass789', 'CURP34567890123456', 2),  -- Privilegio 'admin' (Basado en el privilegio 2)
 ('admin4', 'admin4@mail.com', 'adminpass101', 'CURP45678901234567', 1),  -- Privilegio 'root' (Basado en el privilegio 1)
 ('admin5', 'admin5@mail.com', 'adminpass112', 'CURP56789012345678', 2);  -- Privilegio 'admin' (Basado en el privilegio 2)
+INSERT INTO tarjetas (numTar, fechaExp, cvv, nickname) 
+VALUES 
+('2222333344445555', '07/25', '123', 'user2'),
+('5555666677778888', '11/24', '456', 'user3'),
+('1111222233334444', '03/27', '789', 'user4'),
+('6666777788889999', '09/28', '321', 'user5'),
+('9999000011112222', '06/26', '654', 'user1');
+INSERT INTO pagos (idTarjeta, monto, idViaje, estadoPago) 
+VALUES 
+(1, 500, 1, TRUE),   -- Pago exitoso para el viaje 1
+(2, 800, 2, TRUE),   -- Pago exitoso para el viaje 2
+(3, 700, 3, TRUE),  -- Pago fallido para el viaje 3
+(4, 1200, 4, TRUE),  -- Pago exitoso para el viaje 4
+(5, 400, 5, TRUE);  -- Pago fallido para el viaje 5
 
 SELECT 
     c.idChofer,
