@@ -17,8 +17,7 @@ function verificarCredenciales($nickname, $contrasena) {
     // Consulta SQL para verificar credenciales
     $sql = "SELECT COUNT(*) AS total
             FROM usuarios
-            WHERE nickname = ?
-              AND contra = ?";
+            WHERE nickname = ? AND contra = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $nickname, $contrasena);
     $stmt->execute();
@@ -31,8 +30,9 @@ function verificarCredenciales($nickname, $contrasena) {
   
     // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
     return $total > 0;
-  }
-  function verificarCredencialesAdmin($nickname, $contrasena) {
+}
+
+function verificarCredencialesAdmin($nickname, $contrasena) {
     // Configuración de la base de datos
     $servername = "localhost";
     $username = "root";
@@ -50,8 +50,7 @@ function verificarCredenciales($nickname, $contrasena) {
     // Consulta SQL para verificar credenciales
     $sql = "SELECT COUNT(*) AS total
             FROM admins
-            WHERE nickname = ?
-              AND contra = ?";
+            WHERE nickname = ? AND contra = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $nickname, $contrasena);
     $stmt->execute();
@@ -64,9 +63,9 @@ function verificarCredenciales($nickname, $contrasena) {
   
     // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
     return $total > 0;
-  }
-  
-  if(isset($_COOKIE['logeo'])){
+}
+
+if(isset($_COOKIE['logeo'])){
     $cred = explode(":", $_COOKIE["logeo"]);
           
     $resultado = verificarCredenciales($cred[0], $cred[1]);
@@ -83,10 +82,11 @@ function verificarCredenciales($nickname, $contrasena) {
         header("Location: BarraAdmin.php");
         exit;
     }
-  } else {
+} else {
     header("Location: login.php");
     exit;
-  }
+}
+
 //-----------------------------------------------------------------------------------
 $cnn = new mysqli("localhost", "root", "eneto", "eneto");
 
@@ -94,87 +94,124 @@ if ($cnn->connect_error) {
     die("Error de conexión: " . $cnn->connect_error);
 }
 
+// Lógica para eliminar una tarjeta
+if (isset($_POST['deleteCard'])) {
+    $numTarjetaEliminar = $_POST['numTar'];
+
+    // Prevenir eliminación accidental de tarjetas no asociadas al usuario actual
+    if ($cred[0] != "") {
+        // Consulta para eliminar la tarjeta
+        $deleteQuery = "DELETE FROM tarjetas WHERE numTar = ? AND nickname = ?";
+        $stmt = $cnn->prepare($deleteQuery);
+        $stmt->bind_param("ss", $numTarjetaEliminar, $cred[0]);
+
+        if ($stmt->execute()) {
+            $message = "<div class='alert alert-success'>Tarjeta eliminada correctamente.</div>";;
+        } else {
+            $message = "Error al eliminar la tarjeta: " . $cnn->error;
+        }
+        $stmt->close();
+    } else {
+        $message = "Usuario no válido para eliminar tarjeta.";
+    }
+}
+
+// Lógica para agregar una tarjeta
 if (isset($_POST['submit'])) {
     $numTarjeta = $_POST['numeroTarjeta'];
     $fechaExpiracion = $_POST['fechaExpiracion'];
     $cvv = $_POST['cvv'];
 
+    // Convertir la fecha de expiración a formato "m/y"
     $fechaExpiracion = date("m/y", strtotime($fechaExpiracion));
 
-    $query = "INSERT INTO tarjetas (numTar, fechaExp, cvv) VALUES ('$numTarjeta', '$fechaExpiracion', '$cvv')";
+    // Verificar si la tarjeta ya está registrada para este nickname
+    $checkCardQuery = "SELECT COUNT(*) AS total FROM tarjetas WHERE numTar = ? AND nickname = ?";
+    $stmt = $cnn->prepare($checkCardQuery);
+    $stmt->bind_param("ss", $numTarjeta, $cred[0]);
+    $stmt->execute();
+    $stmt->bind_result($totalCards);
+    $stmt->fetch();
+    $stmt->close();
 
-    if ($cnn->query($query)) {
-        $message = "Metodo de pago agregado correctamente.";
+    if ($totalCards > 0) {
+        // Si la tarjeta ya existe, mostramos un mensaje fuera del modal
+        $message = "<div class='alert alert-danger'>Este número de tarjeta ya está registrado para tu cuenta.</div>";
     } else {
-        $message = "Error al agregar el metodo de pago: " . $cnn->error;
+        // Insertar la nueva tarjeta en la base de datos sin límite de cantidad
+        $query = "INSERT INTO tarjetas (numTar, fechaExp, cvv, nickname) VALUES ('$numTarjeta', '$fechaExpiracion', '$cvv', '$cred[0]')";
+
+        if ($cnn->query($query)) {
+            $message = "<div class='alert alert-success'>Método de pago agregado correctamente.</div>";
+        } else {
+            $message = "<div class='alert alert-danger'>Error al agregar el método de pago: " . $cnn->error . "</div>";
+        }
     }
 }
 
 
-if (isset($_POST['eliminar'])) {
-    $idTarjeta = $_POST['idTarjeta'];
 
-    $query = "DELETE FROM tarjetas WHERE numTar = '$idTarjeta'";
 
-    if ($cnn->query($query)) {
-        $message = "Metodo de pago eliminado correctamente.";
-    } else {
-        $message = "Error al eliminar el metodo de pago: " . $cnn->error;
-    }
-}
+// Obtén las tarjetas asociadas al usuario (nickname)
+$consul = $cnn->query("SELECT * FROM tarjetas WHERE nickname = '$cred[0]'");
 
-$consul = $cnn->query("SELECT * FROM tarjetas");
 $tablas = "";
+
 while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
     $tablas .= "<br>
-    <div class='container-fluid'>
-        <div class='container mt-9'>
-            <div class='column justify-content-center'>
-                <div class='col-lg-12'>
-                    <div class='card'>
-                        <div class='card-body'>
-                            <div class='form-group'>
-                                <label for=''>Numero de Tarjeta: {$ren['numTar']}</label>
-                            </div>
-                            <div class='form-group'>
-                                <label for=''>Fecha de Expiracion: {$ren['fechaExp']}</label>
-                            </div>
-                            <div class='form-group'>
-                                <label for=''>CVV: {$ren['cvv']}</label>
-                            </div>
-                            <div class='d-flex justify-content-end'>
-                                <button type='button' class='btn btn-danger ms-2' data-bs-toggle='modal' data-bs-target='#modalEliminar{$ren['numTar']}'>
-                                    Eliminar
-                                </button>
-                            </div>
+<div class='container-fluid'>
+    <div class='container mt-9'>
+        <div class='column justify-content-center'>
+            <div class='col-lg-12'>
+                <div class='card'>
+                    <div class='card-body'>
+                        <div class='form-group'>
+                            <label for=''>Numero de Tarjeta: {$ren['numTar']}</label>
                         </div>
+                        <div class='form-group'>
+                            <label for=''>Fecha de Expiracion: {$ren['fechaExp']}</label>
+                        </div>
+                        <div class='form-group'>
+                            <label for=''>CVV: {$ren['cvv']}</label>
+                        </div>
+                        <!-- Botón para abrir el modal -->
+                        <form method='POST' action='metodosPagoUsuario.php'>
+                            <input type='hidden' name='numTar' value='{$ren['numTar']}'>
+                            <div class='d-flex justify-content-end'>
+                                <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#deleteCardModal{$ren['numTar']}'>Eliminar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class='modal fade' id='modalEliminar{$ren['numTar']}' tabindex='-1' aria-labelledby='modalEliminarLabel' aria-hidden='true'>
-        <div class='modal-dialog'>
-            <div class='modal-content'>
-                <div class='modal-header'>
-                    <h5 class='modal-title' numTar='modalEliminarLabel'>¿Estas seguro de eliminar esta tarjeta?</h5>
-                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                </div>
-                <div class='modal-body'>
-                    <form method='POST' action='metodosPagoUsuario.php'>
-                        <input type='hidden' name='idTarjeta' value='{$ren['numTar']}'>
-                        <p>Esta acción no se puede deshacer.</p>
-                        <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancelar</button>
-                        <button type='submit' class='btn btn-danger' name='eliminar'>Eliminar</button>
-                    </form>
-                </div>
+<!-- Modal de confirmación de eliminación -->
+<div class='modal fade' id='deleteCardModal{$ren['numTar']}' tabindex='-1' aria-labelledby='deleteCardModalLabel{$ren['numTar']}' aria-hidden='true'>
+    <div class='modal-dialog modal-dialog-centered'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title' id='deleteCardModalLabel{$ren['numTar']}'>Confirmación de eliminación</h5>
+                <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+            </div>
+            <div class='modal-body'>
+                <p>¿Está seguro que desea eliminar la tarjeta <strong>{$ren['numTar']}</strong>?</p> 
+                <p class='text-danger'><strong>Esta acción no se puede deshacer.</strong></p>
+            </div>
+            <div class='modal-footer'>
+                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancelar</button>
+                <form method='POST' action='metodosPagoUsuario.php'>
+                    <input type='hidden' name='numTar' value='{$ren['numTar']}'>
+                    <button type='submit' class='btn btn-danger' name='deleteCard'>Eliminar</button>
+                </form>
             </div>
         </div>
     </div>
-    ";
+</div>
+";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -189,6 +226,10 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+
+<!-- Mostrar el mensaje fuera del modal -->
+<?php if (isset($message)) { echo $message; } ?>
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary color">
     <div class="container-fluid color">
       <a class="navbar-brand white" href="barra.php">Eneto.Inc</a>
@@ -225,6 +266,7 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
     </div>
   </nav>
 
+    <!-- Botón para abrir el modal -->
     <div class="d-flex justify-content-center">
         <a href="metodosPagoUsuario.php" class="btn color white btn-lg" style="flex: 1; margin: 0 10px; text-align: center;" data-bs-toggle="modal" data-bs-target="#metodoPagoModal">
             <span style="font-size: 3rem;">+</span><br> 
@@ -232,49 +274,41 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
         </a>
     </div>
 
-    <?php if (isset($message)): ?>
-        <div class="alert alert-info"><?= $message ?></div>
-    <?php endif; ?>
-
-    <div class="container mt-5">
-        <h2>Metodos de Pago Registrados</h2>
-        <?= $tablas ?>
-    </div>
-
-    <div class="modal fade" id="metodoPagoModal" tabindex="-1" aria-labelledby="metodoPagoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <!-- Modal -->
+    <div class="modal fade" id="metodoPagoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="metodoPagoModalLabel">Agregar Metodo de Pago</h5>
+                    <h5 class="modal-title">Agregar metodo de pago</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formMetodoPago" action="metodosPagoUsuario.php" method="POST">
-                        <div class="form-group mb-3">
-                            <label for="numeroTarjeta" class="form-label">Numero de tarjeta</label>
-                            <input type="text" class="form-control ancho-input-2" id="numeroTarjeta" name="numeroTarjeta" placeholder="1234 5678 9012 3456" minlength="13" maxlength="18" required onkeypress="permitirSoloNumeros(event)">
+                    <form action="metodosPagoUsuario.php" method="POST">
+                        <div class="mb-3">
+                            <label for="numeroTarjeta" class="form-label">Numero de Tarjeta</label>
+                            <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" placeholder="Ingresa el numero de tarjeta" minlength="13" maxlength="18" required>
                         </div>
-                        <div class="fila-flex mb-3">
-                            <div class="form-group">
-                                <label for="fechaExpiracion" class="form-label">Fecha de expiracion</label>
-                                <input type="month" class="form-control ancho-input-2" id="fechaExpiracion" name="fechaExpiracion" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="cvv" class="form-label">CVV</label>
-                                <input type="text" class="form-control ancho-input-2" id="cvv" name="cvv" placeholder="123" minlength="3" maxlength="3" required onkeypress="permitirSoloNumeros(event)">
-                            </div>
+                        <div class="mb-3">
+                            <label for="fechaExpiracion" class="form-label">Fecha de Expiracion</label>
+                            <input type="month" class="form-control" id="fechaExpiracion" name="fechaExpiracion" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" name="cvv" placeholder="Ingresa el CVV"  minlength="3" maxlength="3"required>
+                        </div>
+                        <button type="submit" class="btn color white" name="submit">Agregar</button>
                     </form>
-                </div>
-                <div class="modal-footer d-flex justify-content-between w-100">
-                    <a href="metodosPagoUsuario.php" class="btn btn-secondary" data-bs-dismiss="modal">Regresar</a>
-                    <button type="submit" class="btn color white" form="formMetodoPago" name="submit">Guardar</button>
                 </div>
             </div>
         </div>
     </div>
 
-</body>
-<script src="scripts/utileria.js"></script>
+    <div class="container mt-4">
+        <h4>Metodos de pago registrados</h4>
+        <div class="row">
+            <?php echo $tablas; ?>
+        </div>
+    </div>
 
+</body>
 </html>

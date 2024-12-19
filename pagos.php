@@ -1,20 +1,17 @@
 <?php
+
 function verificarCredenciales($nickname, $contrasena) {
-  // Configuración de la base de datos
   $servername = "localhost";
   $username = "root";
   $password = "eneto";
   $dbname = "eneto";
 
-  // Crear conexión
   $conn = new mysqli($servername, $username, $password, $dbname);
 
-  // Verificar si hubo errores en la conexión
   if ($conn->connect_error) {
       die("Conexión fallida: " . $conn->connect_error);
   }
 
-  // Consulta SQL para verificar credenciales
   $sql = "SELECT COUNT(*) AS total
           FROM usuarios
           WHERE nickname = ?
@@ -25,29 +22,23 @@ function verificarCredenciales($nickname, $contrasena) {
   $stmt->bind_result($total);
   $stmt->fetch();
 
-  // Cerrar la consulta y conexión
   $stmt->close();
   $conn->close();
 
-  // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
   return $total > 0;
 }
 function verificarCredencialesAdmin($nickname, $contrasena) {
-  // Configuración de la base de datos
   $servername = "localhost";
   $username = "root";
   $password = "eneto";
   $dbname = "eneto";
 
-  // Crear conexión
   $conn = new mysqli($servername, $username, $password, $dbname);
 
-  // Verificar si hubo errores en la conexión
   if ($conn->connect_error) {
       die("Conexión fallida: " . $conn->connect_error);
   }
 
-  // Consulta SQL para verificar credenciales
   $sql = "SELECT COUNT(*) AS total
           FROM admins
           WHERE nickname = ?
@@ -58,19 +49,22 @@ function verificarCredencialesAdmin($nickname, $contrasena) {
   $stmt->bind_result($total);
   $stmt->fetch();
 
-  // Cerrar la consulta y conexión
   $stmt->close();
   $conn->close();
 
-  // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
   return $total > 0;
 }
 
 if(isset($_COOKIE['logeo'])){
   $cred = explode(":", $_COOKIE["logeo"]);
         
-  $resultado = verificarCredenciales($cred[0], $cred[1]);
   
+  $resultado = verificarCredenciales($cred[0], $cred[1]);
+  if ($resultado) {
+    echo htmlspecialchars($cred[0]); //aqui esta el nickname alfin
+   
+}
+
   if($resultado > 0){
       if(isset($_POST['unlog'])){
         setcookie("logeo", "", time() - 3600, "/", $_SERVER['SERVER_ADDR']);
@@ -87,22 +81,67 @@ if(isset($_COOKIE['logeo'])){
   header("Location: login.php");
   exit;
 }
+function obtenerPagos($nickname) {
+    $servername = "localhost";
+    $username = "root";
+    $password = "eneto";
+    $dbname = "eneto";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        die("Conexión fallida: " . $conn->connect_error);
+    }
+
+    $sql = "SELECT p.idPago, p.idTarjeta, p.monto, p.idViaje, p.estadoPago
+            FROM pagos p
+            JOIN viajes v ON p.idViaje = v.idViaje
+            WHERE v.idUsuario = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $nickname); // Usamos el nickname del usuario
+    $stmt->execute();
+    $stmt->bind_result($idPago, $idTarjeta, $monto, $idViaje, $estadoPago);
+
+    $pagos = [];
+    while ($stmt->fetch()) {
+        $pagos[] = [
+            'idPago' => $idPago,
+            'idTarjeta' => $idTarjeta,
+            'monto' => $monto,
+            'idViaje' => $idViaje,
+            'estadoPago' => $estadoPago
+        ];
+    }
+
+    $stmt->close();
+    $conn->close();
+
+    return $pagos;
+}
+
+if (isset($_COOKIE['logeo'])) {
+    $cred = explode(":", $_COOKIE["logeo"]);
+    $nickname = $cred[0];
+
+    $pagos = obtenerPagos($nickname);
+} else {
+    header("Location: login.php");
+    exit;
+}
 ?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
-    
+    <title>Listado de Pagos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/barra.css">
     <link rel="stylesheet" href="css/estilos.css">
-
 </head>
 <body>
-
-
 <nav class="navbar navbar-expand-lg bg-body-tertiary color">
     <div class="container-fluid color">
       <a class="navbar-brand white" href="barra.php">Eneto.Inc</a>
@@ -139,68 +178,37 @@ if(isset($_COOKIE['logeo'])){
     </div>
   </nav>
 
-  <div class="container-fluid">
+<div class="container-fluid">
     <div class="container mt-9">
         <h2>Listado de Pagos</h2>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="">ID Pago: 1</label>
+        <?php if (!empty($pagos)): ?>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <?php foreach ($pagos as $pago): ?>
+                                <div class="form-group">
+                                    <label for="">ID Pago: <?= $pago['idPago'] ?></label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">ID Tarjeta: <?= $pago['idTarjeta'] ?></label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Monto: $<?= number_format($pago['monto'], 2) ?></label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">ID Viaje: <?= $pago['idViaje'] ?></label>
+                                </div>
+                                
+                                <hr>
+                            <?php endforeach; ?>
                         </div>
-                        <div class="form-group">
-                            <label for="">ID Tarjeta: 1234-5678-9012-3456</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Monto: $500</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">ID Viaje: 101</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Estado de Pago: Completado</label>
-                        </div>
-                    
-                        <hr>
-                        <div class="form-group">
-                            <label for="">ID Pago: 2</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">ID Tarjeta: 9876-5432-1098-7654</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Monto: $750</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">ID Viaje: 102</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Estado de Pago: Pendiente</label>
-                        </div>
-                        
-                        <hr>
-                        <div class="form-group">
-                            <label for="">ID Pago: 3</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">ID Tarjeta: 2468-1357-9024-6813</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Monto: $300</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">ID Viaje: 103</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Estado de Pago: Completado</label>
-                        </div>
-                        
-                        <hr>
                     </div>
                 </div>
             </div>
-        </div>
+        <?php else: ?>
+            <p>No hay pagos disponibles para este usuario.</p>
+        <?php endif; ?>
     </div>
 </div>
 
