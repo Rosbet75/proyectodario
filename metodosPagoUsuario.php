@@ -1,20 +1,16 @@
 <?php
 function verificarCredenciales($nickname, $contrasena) {
-    // Configuración de la base de datos
     $servername = "localhost";
     $username = "root";
     $password = "eneto";
     $dbname = "eneto";
   
-    // Crear conexión
     $conn = new mysqli($servername, $username, $password, $dbname);
   
-    // Verificar si hubo errores en la conexión
     if ($conn->connect_error) {
-        die("Conexión fallida: " . $conn->connect_error);
+        die("Conexion fallida: " . $conn->connect_error);
     }
   
-    // Consulta SQL para verificar credenciales
     $sql = "SELECT COUNT(*) AS total
             FROM usuarios
             WHERE nickname = ? AND contra = ?";
@@ -24,11 +20,9 @@ function verificarCredenciales($nickname, $contrasena) {
     $stmt->bind_result($total);
     $stmt->fetch();
   
-    // Cerrar la consulta y conexión
     $stmt->close();
     $conn->close();
   
-    // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
     return $total > 0;
 }
 
@@ -39,15 +33,12 @@ function verificarCredencialesAdmin($nickname, $contrasena) {
     $password = "eneto";
     $dbname = "eneto";
   
-    // Crear conexión
     $conn = new mysqli($servername, $username, $password, $dbname);
   
-    // Verificar si hubo errores en la conexión
     if ($conn->connect_error) {
-        die("Conexión fallida: " . $conn->connect_error);
+        die("Conexion fallida: " . $conn->connect_error);
     }
   
-    // Consulta SQL para verificar credenciales
     $sql = "SELECT COUNT(*) AS total
             FROM admins
             WHERE nickname = ? AND contra = ?";
@@ -57,11 +48,9 @@ function verificarCredencialesAdmin($nickname, $contrasena) {
     $stmt->bind_result($total);
     $stmt->fetch();
   
-    // Cerrar la consulta y conexión
     $stmt->close();
     $conn->close();
   
-    // Retorna verdadero si se encontró una coincidencia, falso de lo contrario
     return $total > 0;
 }
 
@@ -91,16 +80,13 @@ if(isset($_COOKIE['logeo'])){
 $cnn = new mysqli("localhost", "root", "eneto", "eneto");
 
 if ($cnn->connect_error) {
-    die("Error de conexión: " . $cnn->connect_error);
+    die("Error de conexion: " . $cnn->connect_error);
 }
 
-// Lógica para eliminar una tarjeta
 if (isset($_POST['deleteCard'])) {
     $numTarjetaEliminar = $_POST['numTar'];
 
-    // Prevenir eliminación accidental de tarjetas no asociadas al usuario actual
     if ($cred[0] != "") {
-        // Consulta para eliminar la tarjeta
         $deleteQuery = "DELETE FROM tarjetas WHERE numTar = ? AND nickname = ?";
         $stmt = $cnn->prepare($deleteQuery);
         $stmt->bind_param("ss", $numTarjetaEliminar, $cred[0]);
@@ -112,7 +98,7 @@ if (isset($_POST['deleteCard'])) {
         }
         $stmt->close();
     } else {
-        $message = "Usuario no válido para eliminar tarjeta.";
+        $message = "Usuario no valido para eliminar tarjeta.";
     }
 }
 
@@ -132,7 +118,7 @@ if (isset($_POST['submit'])) {
     $stmt->close();
 
     if ($totalCards > 0) {
-        $message = "<div class='alert alert-danger'>Este número de tarjeta ya esta registrado para tu cuenta.</div>";
+        $message = "<div class='alert alert-danger'>Este numero de tarjeta ya esta registrado para tu cuenta.</div>";
     } else {
         $query = "INSERT INTO tarjetas (numTar, fechaExp, cvv, nickname) VALUES ('$numTarjeta', '$fechaExpiracion', '$cvv', '$cred[0]')";
 
@@ -147,7 +133,6 @@ if (isset($_POST['submit'])) {
 
 
 
-// Obtén las tarjetas asociadas al usuario (nickname)
 $consul = $cnn->query("SELECT * FROM tarjetas WHERE nickname = '$cred[0]'");
 
 $tablas = "";
@@ -169,7 +154,6 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
                         <div class='form-group'>
                             <label for=''>CVV: {$ren['cvv']}</label>
                         </div>
-                        <!-- Botón para abrir el modal -->
                         <form method='POST' action='metodosPagoUsuario.php'>
                             <input type='hidden' name='numTar' value='{$ren['numTar']}'>
                             <div class='d-flex justify-content-end'>
@@ -183,17 +167,16 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
     </div>
 </div>
 
-<!-- Modal de confirmación de eliminación -->
 <div class='modal fade' id='deleteCardModal{$ren['numTar']}' tabindex='-1' aria-labelledby='deleteCardModalLabel{$ren['numTar']}' aria-hidden='true'>
     <div class='modal-dialog modal-dialog-centered'>
         <div class='modal-content'>
             <div class='modal-header'>
-                <h5 class='modal-title' id='deleteCardModalLabel{$ren['numTar']}'>Confirmación de eliminación</h5>
+                <h5 class='modal-title' id='deleteCardModalLabel{$ren['numTar']}'>Confirmacion de eliminacion</h5>
                 <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
             </div>
             <div class='modal-body'>
-                <p>¿Está seguro que desea eliminar la tarjeta <strong>{$ren['numTar']}</strong>?</p> 
-                <p class='text-danger'><strong>Esta acción no se puede deshacer.</strong></p>
+                <p>¿Esta seguro que desea eliminar la tarjeta <strong>{$ren['numTar']}</strong>?</p> 
+                <p class='text-danger'><strong>Esta accion no se puede deshacer.</strong></p>
             </div>
             <div class='modal-footer'>
                 <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancelar</button>
@@ -222,7 +205,6 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
 </head>
 <body>
 
-<!-- Mostrar el mensaje fuera del modal -->
 <?php if (isset($message)) { echo $message; } ?>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary color">
@@ -261,7 +243,6 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
     </div>
   </nav>
 
-    <!-- Botón para abrir el modal -->
     <div class="d-flex justify-content-center">
         <a href="metodosPagoUsuario.php" class="btn color white btn-lg" style="flex: 1; margin: 0 10px; text-align: center;" data-bs-toggle="modal" data-bs-target="#metodoPagoModal">
             <span style="font-size: 3rem;">+</span><br> 
@@ -269,7 +250,6 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
         </a>
     </div>
 
-    <!-- Modal -->
     <div class="modal fade" id="metodoPagoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

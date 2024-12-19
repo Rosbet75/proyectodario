@@ -11,7 +11,7 @@ function verificarCredenciales($nickname, $contrasena) {
 
   // Verificar si hubo errores en la conexión
   if ($conn->connect_error) {
-      die("Conexión fallida: " . $conn->connect_error);
+      die("Conexion fallida: " . $conn->connect_error);
   }
 
   // Consulta SQL para verificar credenciales
@@ -44,7 +44,7 @@ function verificarCredencialesAdmin($nickname, $contrasena) {
 
   // Verificar si hubo errores en la conexión
   if ($conn->connect_error) {
-      die("Conexión fallida: " . $conn->connect_error);
+      die("Conexion fallida: " . $conn->connect_error);
   }
 
   // Consulta SQL para verificar credenciales
@@ -249,7 +249,7 @@ LIMIT 1;";
         <div>
             <br>
             <input type="hidden" name="matricula" value="<?php echo $vehiculo['idMatricula']?>">
-            <label for="vehiculo" class="form-label">Vehículo asignado</label>
+            <label for="vehiculo" class="form-label">Vehiculo asignado</label>
             <input type="text" class="form-control" id="vehiculo" name="vehiculo" value="<?php echo $vehiculo['modelo'] . ' - ' . $vehiculo['color'] . ' (' . $vehiculo['anoVehiculo'] . ')'; ?>" readonly>
         </div>
         <div>

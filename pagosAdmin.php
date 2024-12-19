@@ -99,7 +99,7 @@ $consul = $cnn->query("SELECT idPago, idTarjeta, monto, idViaje, estadoPago, cre
 
 $tablas = "";
 while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
-    $estadoPago = $ren['estadoPago'] == 1 ? 'Completado' : 'Pendiente'; // Suponiendo que 1 es completado y 0 es pendiente
+    $estadoPago = $ren['estadoPago'] == 1 ? 'Completado' : 'Pendiente'; 
     $tablas .= "<br>
     <div class='container-fluid'>
         <div class='container mt-9'>
@@ -189,7 +189,7 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
                 <div class='modal-body'>
                     <form method='POST' action='pagosAdmin.php'>
                         <input type='hidden' name='idPago' value='{$ren['idPago']}'>
-                        <p>Esta acción no se puede deshacer.</p>
+                        <p>Esta accion no se puede deshacer.</p>
                         <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancelar</button>
                         <button type='submit' class='btn btn-danger' name='eliminar'>Eliminar</button>
                     </form>
@@ -202,8 +202,7 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
 
 
 
-// Verificar si se realizó la acción de eliminar
-// Verificar si se realizó la acción de eliminar
+
 if (isset($_POST['eliminar'])) {
   $idPago = $_POST['idPago'];
 
@@ -214,7 +213,6 @@ if (isset($_POST['eliminar'])) {
 
       if ($stmt->execute()) {
           echo "<div class='alert alert-info'>Pago eliminado correctamente.</div>";
-          // Redirigir a la misma página para actualizar los datos
           header("Location: " . $_SERVER['PHP_SELF']);
           exit;
       } else {
@@ -240,7 +238,6 @@ if (isset($_POST['modificar'])) {
 
   if ($stmt->execute()) {
       echo "<div class='alert alert-info'>Pago actualizado correctamente.</div>";
-      // Redirigir a la misma página para actualizar los datos
       header("Location: " . $_SERVER['PHP_SELF']);
       exit;
   } else {
@@ -258,7 +255,7 @@ if (isset($_POST['modificar'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Pagos</title>
+    <title>Gestion de Pagos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/barra.css">
     <link rel="stylesheet" href="css/estilos.css">
@@ -333,7 +330,7 @@ if (isset($_POST['modificar'])) {
     </div>
   </nav>
     <div class="container mt-5">
-        <h1>Gestión de Pagos</h1>
+        <h1>Gestion de Pagos</h1>
         <?= $tablas ?>
     </div>
 

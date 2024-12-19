@@ -11,7 +11,7 @@ function verificarCredenciales($nickname, $contrasena) {
 
   // Verificar si hubo errores en la conexión
   if ($conn->connect_error) {
-      die("Conexión fallida: " . $conn->connect_error);
+      die("Conexion fallida: " . $conn->connect_error);
   }
 
   // Consulta SQL para verificar credenciales
@@ -44,7 +44,7 @@ function verificarCredencialesAdmin($nickname, $contrasena) {
 
   // Verificar si hubo errores en la conexión
   if ($conn->connect_error) {
-      die("Conexión fallida: " . $conn->connect_error);
+      die("Conexion fallida: " . $conn->connect_error);
   }
 
   // Consulta SQL para verificar credenciales
@@ -72,10 +72,7 @@ if (isset($_COOKIE['logeo'])) {
   
   $resultado = verificarCredenciales($cred[0], $cred[1]);
   
-  if ($resultado) {
-      echo htmlspecialchars($cred[0]); //aqui esta el nickname alfin
-     
-  }
+  
   $resultado = verificarCredenciales($cred[0], $cred[1]);
   
   if($resultado > 0){

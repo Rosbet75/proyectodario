@@ -9,7 +9,7 @@ function verificarCredenciales($nickname, $contrasena) {
   $conn = new mysqli($servername, $username, $password, $dbname);
 
   if ($conn->connect_error) {
-      die("Conexión fallida: " . $conn->connect_error);
+      die("Conexion fallida: " . $conn->connect_error);
   }
 
   $sql = "SELECT COUNT(*) AS total
@@ -36,7 +36,7 @@ function verificarCredencialesAdmin($nickname, $contrasena) {
   $conn = new mysqli($servername, $username, $password, $dbname);
 
   if ($conn->connect_error) {
-      die("Conexión fallida: " . $conn->connect_error);
+      die("Conexion fallida: " . $conn->connect_error);
   }
 
   $sql = "SELECT COUNT(*) AS total
@@ -60,11 +60,7 @@ if(isset($_COOKIE['logeo'])){
         
   
   $resultado = verificarCredenciales($cred[0], $cred[1]);
-  if ($resultado) {
-    echo htmlspecialchars($cred[0]); //aqui esta el nickname alfin
-   
-}
-
+  
   if($resultado > 0){
       if(isset($_POST['unlog'])){
         setcookie("logeo", "", time() - 3600, "/", $_SERVER['SERVER_ADDR']);
@@ -90,7 +86,7 @@ function obtenerPagos($nickname) {
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     if ($conn->connect_error) {
-        die("Conexión fallida: " . $conn->connect_error);
+        die("Conexion fallida: " . $conn->connect_error);
     }
 
     $sql = "SELECT p.idPago, p.idTarjeta, p.monto, p.idViaje, p.estadoPago
@@ -99,7 +95,7 @@ function obtenerPagos($nickname) {
             WHERE v.idUsuario = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $nickname); // Usamos el nickname del usuario
+    $stmt->bind_param("s", $nickname);
     $stmt->execute();
     $stmt->bind_result($idPago, $idTarjeta, $monto, $idViaje, $estadoPago);
 
