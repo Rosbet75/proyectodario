@@ -159,8 +159,8 @@ if (!$result) {
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary color">
     <div class="container-fluid color">
-      <a class="navbar-brand white" href="#">Eneto.Inc</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand white" href="BarraAdmin.php">Eneto.Inc</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -202,82 +202,30 @@ if (!$result) {
             <a class="nav-link white" href="CitasAdmin.php">Citas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="pagos.php">Pagos</a>
+            <a class="nav-link white" href="pagosAdmin.php">Pagos</a>
           </li>
           <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Vehiculos
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="vehiculosAdmin.php">Registrar Vehiculo</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="editareliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
-                    </div>
-                </li>
+              <a class="nav-link dropdown-toggle white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Vehiculos
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="vehiculosAdmin.php">Registrar Vehiculo</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="editareliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
+              </div>
+          </li>
+          <li class="nav-item">
+            <form action="" method="post" name="logout" id="logout">
+              <input type="hidden" value="1" name="unlog">
+              <button type='submit' form='logout' class='btn color white'>Log out</button>
+            </form>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <div class="card">
-                <h1 class="text-success text-center mt-3">Registrar Administrador</h1>
-                <div class="card-body">
-                    <form id="registroAdmin" action="administradorAdmin.php" method="POST">
-                        <div class="form-group">
-                            <label for="nickname">Nombre de usuario</label>
-                            <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Ingresa tu nombre de usuario" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="correo">Correo</label>
-                            <input type="email" class="form-control" id="correo" name="correo" placeholder="Ingresa el correo electrónico" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contra">Contraseña</label>
-                            <input type="password" class="form-control" id="contra" name="contra" placeholder="Ingresa la contraseña" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="curp">CURP</label>
-                            <select class="form-control" id="curp" name="curp" required>
-                                <option value="" disabled selected>Selecciona una CURP</option>
-                                <?php
-                                if (mysqli_num_rows($result) > 0) {
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        echo "<option value='" . $row["curp"] . "'>" . $row["curp"] . "</option>";
-                                    }
-                                } else {
-                                    echo "<option value='' disabled>No se encontraron CURPs</option>";
-                                }
-                                ?>
-                            </select>   
-                        </div>
-                        <div class="form-group">
-                          <label for="privilegios">Privilegios</label>
-                          <select class="form-control" id="privilegios" name="privilegios" required>
-                              <option value="" disabled selected>Selecciona los privilegios</option>
-                              <?php
-                              $query = "SELECT idPriv, rol FROM privilegios";
-                              $result = mysqli_query($cnn, $query);
-                              if (mysqli_num_rows($result) > 0) {
-                                  while ($row = mysqli_fetch_assoc($result)) {
-                                      echo "<option value='" . $row["idPriv"] . "'>" . $row["rol"] . "</option>";
-                                  }
-                              } else {
-                                  echo "<option value='' disabled>No se encontraron privilegios</option>";
-                                  }
-                                  ?>
-                              </select>
-                        </div>
-                        <br>
-                        <button class="btn color white w-100" type="submit">Registrar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-  </div>
+
 </body>
 <script src="scripts/utileria.js"></script>
 </html>

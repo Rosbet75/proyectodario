@@ -259,8 +259,8 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary color">
     <div class="container-fluid color">
-      <a class="navbar-brand white" href="#">Eneto.Inc</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand white" href="BarraAdmin.php">Eneto.Inc</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -302,24 +302,24 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
             <a class="nav-link white" href="CitasAdmin.php">Citas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="pagos.php">Pagos</a>
+            <a class="nav-link white" href="pagosAdmin.php">Pagos</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Vehiculos
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="vehiculosAdmin.php">Registrar Vehiculo</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="editareliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
-            </div>
-        </li>
-        <li class="nav-item">
-        <form action="" method="post" name="logout" id="logout">
+              <a class="nav-link dropdown-toggle white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Vehiculos
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="vehiculosAdmin.php">Registrar Vehiculo</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="editareliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
+              </div>
+          </li>
+          <li class="nav-item">
+            <form action="" method="post" name="logout" id="logout">
               <input type="hidden" value="1" name="unlog">
               <button type='submit' form='logout' class='btn color white'>Log out</button>
             </form>
-            </li>
+          </li>
         </ul>
       </div>
     </div>
