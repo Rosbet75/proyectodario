@@ -238,9 +238,9 @@ function insertarReview($idViaje, $rating, $comentarios) {
                           </div>
                           <div class="d-flex justify-content-end">
                             <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalQueja" 
-                            data-id="' . $row['idViaje'] . '">Quejar</a>
+                            data-id="' . $row['idViaje'] . '">Queja</a>
                             <button type="button" class="btn color white" data-bs-toggle="modal" data-bs-target="#reviewModal" 
-                            data-id="' . $row['idViaje'] . '">Dejar Review</button>
+                            data-id="' . $row['idViaje'] . '">Review</button>
                           </div>
                         </div>
                       </div>
