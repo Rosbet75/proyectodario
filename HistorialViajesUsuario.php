@@ -133,11 +133,13 @@ function insertarQueja($idViaje, $comentarios) {
   $stmt->close();
   $conn->close();
 }
+$quejaEnviada = false; // Inicializar la variable
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comentarios'])) {
   $comentarios = $_POST['comentarios'];
   $idViaje = 1;
   insertarQueja($idViaje, $comentarios);
+  $quejaEnviada = true;  // Marca que la queja ha sido enviada
 }
 
 
@@ -225,44 +227,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reviewComentarios']) 
     </nav>
 
     <div class="container mt-5">
-      <h2>Historial de Viajes</h2>
-      <?php
-        $historial = obtenerHistorialViajes($cred[0]);
-        while ($row = $historial->fetch_assoc()) {
-          echo '<div class="container-fluid">
-                  <div class="container mt-1">
-                    <div class="row justify-content-center">
-                      <div class="col-lg-8">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="form-group">
-                              <label>Destino: ' . htmlspecialchars($row['destino']) . '</label>
-                            </div>
-                            <div class="form-group">
-                              <label>Fecha: ' . htmlspecialchars($row['createdAt']) . '</label>
-                            </div>
-                            <div class="form-group">
-                              <label>Costo: $' . htmlspecialchars($row['costo_viaje']) . '</label>
-                            </div>
-                            <div class="form-group">
-                              <label>Cuota de Ganancia: $' . htmlspecialchars($row['cuota_ganancia']) . '</label>
-                            </div>
-                            <div class="form-group">
-                              <label>Matrícula: ' . htmlspecialchars($row['idMatricula']) . '</label>
-                            </div>
-                            <div class="d-flex justify-content-end">
-                              <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalQueja">Queja</a>
-                              <a href="reviewViaje.html" class="btn btn-primary btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalReview">Review</a>
-                            </div>
-                          </div>
+  <h2>Historial de Viajes</h2>
+  <?php
+    $historial = obtenerHistorialViajes($cred[0]);
+    while ($row = $historial->fetch_assoc()) {
+      echo '<div class="container-fluid">
+              <div class="container mt-1">
+                <div class="row justify-content-center">
+                  <div class="col-lg-8">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="form-group">
+                          <label>Destino: ' . htmlspecialchars($row['destino']) . '</label>
+                        </div>
+                        <div class="form-group">
+                          <label>Fecha: ' . htmlspecialchars($row['createdAt']) . '</label>
+                        </div>
+                        <div class="form-group">
+                          <label>Costo: $' . htmlspecialchars($row['costo_viaje']) . '</label>
+                        </div>
+                        <div class="form-group">
+                          <label>Cuota de Ganancia: $' . htmlspecialchars($row['cuota_ganancia']) . '</label>
+                        </div>
+                        <div class="form-group">
+                          <label>Matrícula: ' . htmlspecialchars($row['idMatricula']) . '</label>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                          <!-- El botón de queja se oculta si la queja ya fue enviada -->
+                          <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalQueja" id="btnQueja' . $row['idMatricula'] . '" ' . ($quejaEnviada ? 'style="display:none;"' : '') . '>Queja</a>
+                          <a href="reviewViaje.html" class="btn btn-primary btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalReview">Review</a>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>';
-        }
-      ?>
-    </div>
+                </div>
+              </div>
+            </div>';
+    }
+  ?>
+</div>
+
 
     <!-- Modal de Queja -->
     <div class="modal fade" id="modalQueja" tabindex="-1" aria-labelledby="modalQuejaLabel" aria-hidden="true">
@@ -297,33 +301,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reviewComentarios']) 
       </div>
       <div class="modal-body">
         <form id="review">
-          <div class="form-group">
-            <label for="atendido" class="form-label">Rating (1 - 10)</label> 
-            <!-- <input type="number" class="form-control ancho-input-2" id="cantidad" name="atendido" min="0" max="10" step="1" value="0"> -->
-            <div id="rateYo"></div> 
-            <script type="text/javascript" src="jquery.min.js"></script> 
-            <script type="text/javascript" src="jquery.rateyo.min.js"></script> 
-            <script> 
-            $("#rateYo").rateYo({ 
-            rating:  5, 
-            spacing: "36px", 
-            numStars: 10, 
-            minValue: 0, 
-            maxValue: 10, 
-            normalFill: 'grey', 
-            ratedFill: 'orange',}) </script> 
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="comentarios" class="form-label">Comentarios</label>
-            <textarea type="text" class="form-control ancho-input-2" id="comentarios" required> </textarea>
-            </div>
-            <br>
-        
-        <br>
-        <button class="btn color white" type="submit" id="mandarReview">Enviar review</button>
+        <div class="form-group">
+                          <label for="atendido" class="form-label">Rating (1 - 10)</label> 
+                          <!-- <input type="number" class="form-control ancho-input-2" id="cantidad" name="atendido" min="0" max="10" step="1" value="0"> -->
+                          <div id="rateYo"></div> 
+                          <script type="text/javascript" src="jquery.min.js"></script> 
+                          <script type="text/javascript" src="jquery.rateyo.min.js"></script> 
+                          <script> 
+                          $("#rateYo").rateYo({ 
+                          rating:  5, 
+                          spacing: "36px", 
+                          numStars: 10, 
+                          minValue: 0, 
+                          maxValue: 10, 
+                          normalFill: 'grey', 
+                          ratedFill: 'orange',}) </script> 
+                        </div>
+                        <br>
+                        <div class="form-group">
+                          <label for="comentarios" class="form-label">Comentarios</label>
+                          <textarea type="text" class="form-control ancho-input-2" id="comentarios" required> </textarea>
+                          </div>
+                          <br>
+                      
+                      <br>
+                      <button class="btn color white" type="submit" id="mandarReview">Enviar review</button>
 
-        
+                      
       </form>
       </div>
     </div>
