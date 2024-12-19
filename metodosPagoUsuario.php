@@ -116,16 +116,13 @@ if (isset($_POST['deleteCard'])) {
     }
 }
 
-// Lógica para agregar una tarjeta
 if (isset($_POST['submit'])) {
     $numTarjeta = $_POST['numeroTarjeta'];
     $fechaExpiracion = $_POST['fechaExpiracion'];
     $cvv = $_POST['cvv'];
 
-    // Convertir la fecha de expiración a formato "m/y"
     $fechaExpiracion = date("m/y", strtotime($fechaExpiracion));
 
-    // Verificar si la tarjeta ya está registrada para este nickname
     $checkCardQuery = "SELECT COUNT(*) AS total FROM tarjetas WHERE numTar = ? AND nickname = ?";
     $stmt = $cnn->prepare($checkCardQuery);
     $stmt->bind_param("ss", $numTarjeta, $cred[0]);
@@ -135,16 +132,14 @@ if (isset($_POST['submit'])) {
     $stmt->close();
 
     if ($totalCards > 0) {
-        // Si la tarjeta ya existe, mostramos un mensaje fuera del modal
-        $message = "<div class='alert alert-danger'>Este número de tarjeta ya está registrado para tu cuenta.</div>";
+        $message = "<div class='alert alert-danger'>Este número de tarjeta ya esta registrado para tu cuenta.</div>";
     } else {
-        // Insertar la nueva tarjeta en la base de datos sin límite de cantidad
         $query = "INSERT INTO tarjetas (numTar, fechaExp, cvv, nickname) VALUES ('$numTarjeta', '$fechaExpiracion', '$cvv', '$cred[0]')";
 
         if ($cnn->query($query)) {
-            $message = "<div class='alert alert-success'>Método de pago agregado correctamente.</div>";
+            $message = "<div class='alert alert-success'>Metodo de pago agregado correctamente.</div>";
         } else {
-            $message = "<div class='alert alert-danger'>Error al agregar el método de pago: " . $cnn->error . "</div>";
+            $message = "<div class='alert alert-danger'>Error al agregar el metodo de pago: " . $cnn->error . "</div>";
         }
     }
 }
@@ -286,7 +281,7 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
                     <form action="metodosPagoUsuario.php" method="POST">
                         <div class="mb-3">
                             <label for="numeroTarjeta" class="form-label">Numero de Tarjeta</label>
-                            <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" placeholder="Ingresa el numero de tarjeta" minlength="13" maxlength="18" required>
+                            <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" placeholder="Ingresa el numero de tarjeta" minlength="13" maxlength="18" onkeypress="permitirSoloNumeros(event)" required>
                         </div>
                         <div class="mb-3">
                             <label for="fechaExpiracion" class="form-label">Fecha de Expiracion</label>
@@ -294,7 +289,7 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
                         </div>
                         <div class="mb-3">
                             <label for="cvv" class="form-label">CVV</label>
-                            <input type="text" class="form-control" id="cvv" name="cvv" placeholder="Ingresa el CVV"  minlength="3" maxlength="3"required>
+                            <input type="text" class="form-control" id="cvv" name="cvv" placeholder="Ingresa el CVV"  minlength="3" maxlength="3" onkeypress="permitirSoloNumeros(event)" required>
                         </div>
                         <button type="submit" class="btn color white" name="submit">Agregar</button>
                     </form>
@@ -309,6 +304,7 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
             <?php echo $tablas; ?>
         </div>
     </div>
+    <script src="scripts/utileria.js"></script>
 
 </body>
 </html>

@@ -99,7 +99,7 @@ if (!$cnn) {
     die("Conexion fallida: " . mysqli_connect_error());
 }
 
-$sqlTarjetas = "SELECT numTar FROM tarjetas";
+$sqlTarjetas = "SELECT numTar FROM tarjetas WHERE nickname = '" . $cred[0] . "'";
 $resultTarjetas = mysqli_query($cnn, $sqlTarjetas);
 
 $sqlConductor = "SELECT * FROM choferes ORDER BY RAND() LIMIT 1";
@@ -167,6 +167,8 @@ LIMIT 1;";
     
     
 }
+
+
 ?>
 
 <html lang="en">
