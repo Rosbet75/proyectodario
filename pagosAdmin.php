@@ -3,7 +3,7 @@
 function verificarCredenciales($nickname, $contrasena) {
     // Configuración de la base de datos
     $servername = "localhost";
-    $username = "root";
+    $username = "eneto";
     $password = "eneto";
     $dbname = "eneto";
   
@@ -36,7 +36,7 @@ function verificarCredenciales($nickname, $contrasena) {
   function verificarCredencialesAdmin($nickname, $contrasena) {
     // Configuración de la base de datos
     $servername = "localhost";
-    $username = "root";
+    $username = "eneto";
     $password = "eneto";
     $dbname = "eneto";
   
@@ -89,7 +89,7 @@ function verificarCredenciales($nickname, $contrasena) {
     exit;
   }
   //--------------------------------------------------------
-$cnn = new mysqli("localhost", "root", "eneto", "eneto");
+$cnn = new mysqli("localhost", "eneto", "eneto", "eneto");
 
 if ($cnn->connect_error) {
     die("Error de conexion: " . $cnn->connect_error);

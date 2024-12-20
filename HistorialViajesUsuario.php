@@ -1,7 +1,7 @@
 <?php
 function verificarCredenciales($nickname, $contrasena) {
   $servername = "localhost";
-  $username = "root";
+  $username = "eneto";
   $password = "eneto";
   $dbname = "eneto";
 
@@ -26,7 +26,7 @@ function verificarCredenciales($nickname, $contrasena) {
 
 function verificarCredencialesAdmin($nickname, $contrasena) {
   $servername = "localhost";
-  $username = "root";
+  $username = "eneto";
   $password = "eneto";
   $dbname = "eneto";
 
@@ -72,7 +72,7 @@ if (isset($_COOKIE['logeo'])) {
 
 function obtenerHistorialViajes($nickname) {
   $servername = "localhost";
-  $username = "root";
+  $username = "eneto";
   $password = "eneto";
   $dbname = "eneto";
 
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 function insertarQueja($idViaje, $comentarios) {
   $servername = "localhost";
-  $username = "root";
+  $username = "eneto";
   $password = "eneto";
   $dbname = "eneto";
 
@@ -142,7 +142,7 @@ function insertarQueja($idViaje, $comentarios) {
 
 function insertarReview($idViaje, $rating, $comentarios) {
   $servername = "localhost";
-  $username = "root";
+  $username = "eneto";
   $password = "eneto";
   $dbname = "eneto";
 

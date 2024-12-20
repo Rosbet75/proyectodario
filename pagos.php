@@ -2,7 +2,7 @@
 
 function verificarCredenciales($nickname, $contrasena) {
   $servername = "localhost";
-  $username = "root";
+  $username = "eneto";
   $password = "eneto";
   $dbname = "eneto";
 
@@ -29,7 +29,7 @@ function verificarCredenciales($nickname, $contrasena) {
 }
 function verificarCredencialesAdmin($nickname, $contrasena) {
   $servername = "localhost";
-  $username = "root";
+  $username = "eneto";
   $password = "eneto";
   $dbname = "eneto";
 
@@ -79,7 +79,7 @@ if(isset($_COOKIE['logeo'])){
 }
 function obtenerPagos($nickname) {
     $servername = "localhost";
-    $username = "root";
+    $username = "eneto";
     $password = "eneto";
     $dbname = "eneto";
 

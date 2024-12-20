@@ -2,7 +2,7 @@
 function verificarCredenciales($nickname, $contrasena) {
   // Configuración de la base de datos
   $servername = "localhost";
-  $username = "root";
+  $username = "eneto";
   $password = "eneto";
   $dbname = "eneto";
 
@@ -35,7 +35,7 @@ function verificarCredenciales($nickname, $contrasena) {
 function verificarCredencialesAdmin($nickname, $contrasena) {
   // Configuración de la base de datos
   $servername = "localhost";
-  $username = "root";
+  $username = "eneto";
   $password = "eneto";
   $dbname = "eneto";
 
@@ -88,7 +88,7 @@ if(isset($_COOKIE['logeo'])){
   exit;
 }
 //------------------------------------------------------------------------------------------------
-$cnn = mysqli_connect("localhost", "root", "eneto", "eneto");
+$cnn = mysqli_connect("localhost", "eneto", "eneto", "eneto");
 
 if (!$cnn) {
     die("Conexion fallida: " . mysqli_connect_error());
