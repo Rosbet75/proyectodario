@@ -499,3 +499,6 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
     <?php echo $tablas; ?>
 </body>
 </html>
+<?php
+mysqli_close($cnn);
+?>

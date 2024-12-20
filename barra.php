@@ -141,3 +141,6 @@ if (isset($_COOKIE['logeo'])) {
   </nav>
 </body>
 </html>
+<?php
+mysqli_close($cnn);
+?>

@@ -265,3 +265,6 @@ if (isset($_POST['nombre'])) {
 <!--hasta aqui funciona bien-->
 <script src="scripts/utileria.js"></script>
 </html>
+<?php
+mysqli_close($cnn);
+?>

@@ -79,10 +79,8 @@ function verificarCredenciales($nickname, $contrasena) {
     $resultado = verificarCredenciales($cred[0], $cred[1]);
     
     if($resultado > 0){
-        if(isset($_POST['unlog'])){
-            header("Location: barra.php");
-            exit;
-        }
+        header("Location: barra.php");
+        exit;
     }
     $resultado = verificarCredencialesAdmin($cred[0], $cred[1]);
     if($resultado > 0){
@@ -218,3 +216,6 @@ mysqli_close($cnn);
     </div>
 </body>
 </html>
+<?php
+mysqli_close($cnn);
+?>

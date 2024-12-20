@@ -269,8 +269,9 @@ LIMIT 1;";
     <br>
 </div>
 
+
+</body>
+</html>
 <?php
 mysqli_close($cnn);
 ?>
-</body>
-</html>

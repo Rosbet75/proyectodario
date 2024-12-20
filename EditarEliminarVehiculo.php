@@ -338,3 +338,6 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
 <script src="scripts/utileria.js"></script>
 
 </html>
+<?php
+mysqli_close($cnn);
+?>

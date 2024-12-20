@@ -210,3 +210,6 @@ if (isset($_COOKIE['logeo'])) {
 
 </body>
 </html>
+<?php
+mysqli_close($cnn);
+?>

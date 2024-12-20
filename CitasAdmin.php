@@ -257,3 +257,6 @@ if ($citasResult->num_rows > 0) {
 
 </body>
 </html>
+<?php
+mysqli_close($cnn);
+?>

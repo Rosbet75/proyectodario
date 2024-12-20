@@ -371,3 +371,6 @@ $cnn->close();
 
 </body>
 </html>
+<?php
+mysqli_close($cnn);
+?>

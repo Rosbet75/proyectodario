@@ -288,3 +288,6 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
 
 </body>
 </html>
+<?php
+mysqli_close($cnn);
+?>
