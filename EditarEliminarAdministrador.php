@@ -206,7 +206,7 @@ while($ren = $consul -> fetch_array(MYSQLI_ASSOC)){
             </div>
             <div class='col-md-6'>
               <label class='form-label'>CURP</label>
-              <input type='text' class='form-control' name='curp' value='{$ren['curp']}' minlength='18' maxlength='18' required>
+              <input type='text' class='form-control' name='curp' value='{$ren['curp']}' minlength='18' maxlength='18' readonly>
             </div>
           </div>
           

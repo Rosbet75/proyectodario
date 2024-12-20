@@ -109,7 +109,7 @@ if (!$cnn) {
     die("Conexion fallida: " . mysqli_connect_error());
 }
 
-$sqlTarjetas = "SELECT numTar FROM tarjetas WHERE nickname = '" . $cred[0] . "'";
+$sqlTarjetas = "SELECT * FROM tarjetas WHERE nickname = '" . $cred[0] . "'";
 $resultTarjetas = mysqli_query($cnn, $sqlTarjetas);
 
 $sqlConductor = "SELECT * FROM choferes ORDER BY RAND() LIMIT 1";
@@ -167,7 +167,8 @@ LIMIT 1;";
     $pagoStmt = $cnn-> prepare($pagoCuero);
     $total = ($cuotaGanacia + $costoViaje);
     $estadoPago = "TRUE";
-    $pagoStmt -> bind_param("siii", $_POST['tarjeta'], $total, $idViaje, $estadoPago);
+    $tarjetona = $_POST['tarjeta'];
+    $pagoStmt -> bind_param("iiii", $tarjetona, $total, $idViaje, $estadoPago);
     if ($pagoStmt -> execute()) {
       echo "\n";
       echo "Pago registrado con exito!";
@@ -235,19 +236,20 @@ LIMIT 1;";
         <div>
             <br>
             <label for="tarjeta" class="form-label">Tarjeta seleccionada</label>
-            <input type="hidden" name="tarjeta" value="<?php $row['numtar']?>">
+            
             <select id="tarjeta" class="form-control" name="tarjeta" required>
                 <option value="" disabled selected>Selecciona una tarjeta</option>
                 <?php
                 if (mysqli_num_rows($resultTarjetas) > 0) {
                     while($row = mysqli_fetch_assoc($resultTarjetas)) {
-                        echo "<option value='" . $row['numTar'] . "'>" . $row['numTar'] . "</option>";
+                        echo "<option value='" . $row['idTarjeta'] . "'>" . $row['numTar'] . "</option>";
                     }
                 } else {
                     echo "<option value='' disabled>No hay tarjetas disponibles</option>";
                 }
                 ?>
             </select>
+            
             <a href="metodosPagoUsuario.php" class="btn btn-link">Agregar nuevo metodo de pago</a>
         </div>
         <div>
