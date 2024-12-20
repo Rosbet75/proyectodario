@@ -104,13 +104,6 @@ if (isset($_POST['nickname']) && isset($_POST['correo']) && isset($_POST['contra
     $apellidoPaterno = $_POST['apellidoPaterno'];
     $apellidomaterno = $_POST['apellidomaterno'];
     $sexo = $_POST['sexo'];
-    if ($contra === $confirmContra) {
-        
-        header('Location: barra.php');
-        exit; 
-    } else {
-        echo "<p class='text-danger'>Las contraseñas no coinciden. Intenta nuevamente.</p>";
-    }
 
     if (empty($nickname) || empty($correo) || empty($contra) || empty($confirmContra) || empty($nombre) || empty($apellidoPaterno) || empty($apellidomaterno) || empty($sexo)) {
         echo "<div class='alert alert-warning mt-4'>Todos los campos son obligatorios</div>";
@@ -133,7 +126,9 @@ if (isset($_POST['nickname']) && isset($_POST['correo']) && isset($_POST['contra
                         VALUES ('$nickname', '$correo', '$contra', '$nombre', '$apellidoPaterno', '$apellidomaterno', '$sexo', NOW(), NOW())";
 
                 if (mysqli_query($cnn, $sql)) {
-                    echo "<div class='alert alert-success mt-4'>Usuario registrado con exito</div>";
+                    // Solo redirigir si la inserción fue exitosa
+                    header('Location: barra.php');
+                    exit;
                 } else {
                     echo "<div class='alert alert-danger mt-4'>Error: " . mysqli_error($cnn) . "</div>";
                 }
@@ -216,6 +211,3 @@ mysqli_close($cnn);
     </div>
 </body>
 </html>
-<?php
-mysqli_close($cnn);
-?>
