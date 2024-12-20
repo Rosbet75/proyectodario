@@ -98,7 +98,7 @@ if(isset($_COOKIE['logeo'])){
   exit;
 }
 //-----------------------------------------------------------------------
-$cnn = mysqli_connect("localhost", "root", "eneto", "eneto");
+$cnn = mysqli_connect("localhost", "eneto", "eneto", "eneto");
 
 if (!$cnn) {
     die("Conexin fallida: " . mysqli_connect_error());
@@ -134,7 +134,7 @@ if (isset($_POST['curp']) && isset($_POST['apellidoPaterno']) && isset($_POST['a
     }
 }
 
-$query = "SELECT idCargo, cargo FROM cargolaboral";
+$query = "SELECT idCargo, cargo FROM cargoLaboral";
 $result = mysqli_query($cnn, $query);
 
 if (!$result) {
