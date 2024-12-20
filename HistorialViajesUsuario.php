@@ -339,5 +339,5 @@ $(document).ready(function() {
 
 </script>
 <?php
-mysqli_close($cnn);
+mysqli_close($conn);
 ?>
