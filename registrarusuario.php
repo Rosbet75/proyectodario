@@ -210,4 +210,9 @@ mysqli_close($cnn);
         </div>
     </div>
 </body>
+<script src="scripts/utileria.js"></script>
 </html>
+<?php
+mysqli_close($cnn);
+?>
+
