@@ -229,7 +229,7 @@ while ($ren = $consul->fetch_array(MYSQLI_ASSOC)) {
             <a class="nav-link white" aria-current="page" href="solicitarViajeUsuario.php">Solicitar viaje</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link white" href="historialViajesUsuario.php">Historial de viajes</a>
+            <a class="nav-link white" href="HistorialViajesUsuario.php">Historial de viajes</a>
           </li>
           <li class="nav-item">
             <a class="nav-link white" href="metodosPagoUsuario.php">Metodos de pago</a>

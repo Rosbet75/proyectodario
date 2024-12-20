@@ -193,11 +193,22 @@ if (isset($_POST['nombre'])) {
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav color">
-          <li class="nav-item"><a class="nav-link white" href="solicitarViajeUsuario.php">Solicitar viaje</a></li>
-          <li class="nav-item"><a class="nav-link white" href="historialViajesUsuario.php">Historial de viajes</a></li>
-          <li class="nav-item"><a class="nav-link white" href="metodosPagoUsuario.php">Metodos de pago</a></li>
-          <li class="nav-item"><a class="nav-link white" href="miperfil.php">Mi perfil</a></li>
-          <li class="nav-item"><a class="nav-link white" href="pagos.php">Pagos</a></li>
+          <li class="nav-item">
+            <a class="nav-link white" aria-current="page" href="solicitarViajeUsuario.php">Solicitar viaje</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link white" href="HistorialViajesUsuario.php">Historial de viajes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link white" href="metodosPagoUsuario.php">Metodos de pago</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link white" href="miperfil.php">Mi perfil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link white" href="pagos.php">Pagos</a>
+          </li>
+
           <li class="nav-item">
             <form action="" method="post" name="logout" id="logout">
               <input type="hidden" value="1" name="unlog">
@@ -206,6 +217,7 @@ if (isset($_POST['nombre'])) {
           </li>
         </ul>
       </div>
+      
     </div>
   </nav>
 

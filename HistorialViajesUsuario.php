@@ -193,27 +193,39 @@ function insertarReview($idViaje, $rating, $comentarios) {
   <link href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css" rel="stylesheet"/>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary color">
+<nav class="navbar navbar-expand-lg bg-body-tertiary color">
     <div class="container-fluid color">
       <a class="navbar-brand white" href="barra.php">Eneto.Inc</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav color">
-          <li class="nav-item"><a class="nav-link white" href="solicitarViajeUsuario.php">Solicitar viaje</a></li>
-          <li class="nav-item"><a class="nav-link white" href="historialViajesUsuario.php">Historial de viajes</a></li>
-          <li class="nav-item"><a class="nav-link white" href="metodosPagoUsuario.php">Metodos de pago</a></li>
-          <li class="nav-item"><a class="nav-link white" href="miperfil.php">Mi perfil</a></li>
-          <li class="nav-item"><a class="nav-link white" href="pagos.php">Pagos</a></li>
+          <li class="nav-item">
+            <a class="nav-link white" aria-current="page" href="solicitarViajeUsuario.php">Solicitar viaje</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link white" href="HistorialViajesUsuario.php">Historial de viajes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link white" href="metodosPagoUsuario.php">Metodos de pago</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link white" href="miperfil.php">Mi perfil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link white" href="pagos.php">Pagos</a>
+          </li>
+
           <li class="nav-item">
             <form action="" method="post" name="logout" id="logout">
               <input type="hidden" value="1" name="unlog">
-              <button type="submit" form="logout" class="btn color white">Log out</button>
+              <button type='submit' form='logout' class='btn color white'>Log out</button>
             </form>
           </li>
         </ul>
       </div>
+      
     </div>
   </nav>
 

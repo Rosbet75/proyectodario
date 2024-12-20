@@ -207,7 +207,7 @@ if ($citasResult->num_rows > 0) {
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="administradorAdmin.php">Crear Usuario Administrador</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="editareliminarAdministrador.php">Editar/Eliminar Usuario Administrador</a>
+              <a class="dropdown-item" href="EditarEliminarAdministrador.php">Editar/Eliminar Usuario Administrador</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -217,7 +217,7 @@ if ($citasResult->num_rows > 0) {
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="empleadosAdmin.php">Registrar Empleado</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="editareliminarEmpleado.php">Editar/Eliminar Empleado</a>
+              <a class="dropdown-item" href="EditarEliminarEmpleado.php">Editar/Eliminar Empleado</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -227,7 +227,7 @@ if ($citasResult->num_rows > 0) {
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="choferesAdmin.php">Registrar Chofer</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="editareliminarChofer.php">Editar/Eliminar Chofer</a>
+              <a class="dropdown-item" href="EditarEliminarChofer.php">Editar/Eliminar Chofer</a>
             </div>
           </li>
           <li class="nav-item">
@@ -246,7 +246,7 @@ if ($citasResult->num_rows > 0) {
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="vehiculosAdmin.php">Registrar Vehiculo</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="editareliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
+                  <a class="dropdown-item" href="EditarEliminarVehiculo.php">Editar/Eliminar Vehiculo</a>
               </div>
           </li>
           <li class="nav-item">
