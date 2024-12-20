@@ -86,13 +86,33 @@
         
         $resultado = verificarCredenciales($_POST['username'], $_POST['contra']);
         if($resultado > 0){
-            setcookie("logeo", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", $_SERVER['SERVER_ADDR']);
+            $metadataUrl = 'http://169.254.169.254/latest/meta-data/public-ipv4';
+            $ch = curl_init($metadataUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            $publicIp = curl_exec($ch);
+            if (curl_errno($ch)) {
+                echo "Error: " . curl_error($ch);
+                $publicIp = "Unable to fetch IP";
+            }
+            curl_close($ch);
+            setcookie("logeo", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", $publicIp);
             header("Location: barra.php");
             exit;
         }
         $resultado = verificarCredencialesAdmin($_POST['username'], $_POST['contra']);
         if($resultado > 0){
-            setcookie("logeo", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", $_SERVER['SERVER_ADDR']);
+            $metadataUrl = 'http://169.254.169.254/latest/meta-data/public-ipv4';
+            $ch = curl_init($metadataUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            $publicIp = curl_exec($ch);
+            if (curl_errno($ch)) {
+                echo "Error: " . curl_error($ch);
+                $publicIp = "Unable to fetch IP";
+            }
+            curl_close($ch);
+            setcookie("logeo", $_POST['username'].":".$_POST['contra'], time() + 3600, "/", $publicIp);
             header("Location: BarraAdmin.php");
             exit;
         }

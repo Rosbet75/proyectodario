@@ -56,7 +56,17 @@ if (isset($_COOKIE['logeo'])) {
   
 
   if (isset($_POST['unlog'])) {
-    setcookie("logeo", "", time() - 3600, "/", $_SERVER['SERVER_ADDR']);
+    $metadataUrl = 'http://169.254.169.254/latest/meta-data/public-ipv4';
+        $ch = curl_init($metadataUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        $publicIp = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo "Error: " . curl_error($ch);
+            $publicIp = "Unable to fetch IP";
+        }
+        curl_close($ch);
+    setcookie("logeo", "", time() - 3600, "/", $publicIp);
     header("Location: login.php");
     exit;
   }
