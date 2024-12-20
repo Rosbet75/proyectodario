@@ -35,7 +35,7 @@ function verificarCredenciales($nickname, $contrasena) {
 function verificarCredencialesAdmin($nickname, $contrasena) {
   // Configuración de la base de datos
   $servername = "localhost";
-  $username = "root";
+  $username = "eneto";
   $password = "eneto";
   $dbname = "eneto";
 
