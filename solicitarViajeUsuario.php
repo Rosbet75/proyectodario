@@ -273,6 +273,6 @@ LIMIT 1;";
 </body>
 </html>
 <?php
-mysqli_close($conn);
+
 mysqli_close($cnn);
 ?>

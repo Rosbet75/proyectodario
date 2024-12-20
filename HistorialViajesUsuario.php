@@ -338,6 +338,3 @@ $(document).ready(function() {
 });
 
 </script>
-<?php
-mysqli_close($conn);
-?>
