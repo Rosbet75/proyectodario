@@ -137,7 +137,7 @@ if (isset($_POST['nickname']) && isset($_POST['correo']) && isset($_POST['contra
     }
 }
 
-mysqli_close($cnn);
+
 ?>
 
 <!DOCTYPE html>

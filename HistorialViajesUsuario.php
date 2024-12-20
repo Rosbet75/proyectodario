@@ -265,7 +265,7 @@ function insertarReview($idViaje, $rating, $comentarios) {
             <input type="hidden" id="idViajeQueja" name="idViaje">
             <div class="form-group">
               <label for="comentariosQueja">Comentarios</label>
-              <textarea class="form-control" id="comentariosQueja" name="comentarios" rows="3"></textarea>
+              <textarea class="form-control" id="comentariosQueja" name="comentarios" rows="3" required></textarea>
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-danger">Enviar Queja</button>
@@ -298,7 +298,7 @@ function insertarReview($idViaje, $rating, $comentarios) {
           </div>
           <div class="form-group">
             <label for="comentariosReview">Comentarios</label>
-            <textarea class="form-control" id="comentariosReview" name="reviewComentarios" rows="3"></textarea>
+            <textarea class="form-control" id="comentariosReview" name="reviewComentarios" rows="3" required></textarea>
           </div>
           
           <div class="form-group">
