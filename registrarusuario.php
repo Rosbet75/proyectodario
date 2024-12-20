@@ -80,9 +80,8 @@ function verificarCredenciales($nickname, $contrasena) {
     
     if($resultado > 0){
         if(isset($_POST['unlog'])){
-          setcookie("logeo", "", time() - 3600, "/", $_SERVER['SERVER_ADDR']);
-          header("Location: login.php");
-          exit;
+            header("Location: barra.php");
+            exit;
         }
     }
     $resultado = verificarCredencialesAdmin($cred[0], $cred[1]);
@@ -90,10 +89,7 @@ function verificarCredenciales($nickname, $contrasena) {
         header("Location: BarraAdmin.php");
         exit;
     }
-  } else {
-    header("Location: login.php");
-    exit;
-  }
+  } 
 //--------------------------------------
 $cnn = mysqli_connect("localhost", "root", "eneto", "eneto");
 
