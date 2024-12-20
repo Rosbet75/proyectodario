@@ -98,7 +98,7 @@ if(isset($_COOKIE['logeo'])){
   exit;
 }
 //-----------------------------------------------------------------------
-$cnn = mysqli_connect("localhost", "eneto", "eneto", "eneto");
+$cnn = mysqli_connect("localhost", "root", "eneto", "eneto");
 
 if (!$cnn) {
     die("Conexin fallida: " . mysqli_connect_error());
@@ -123,7 +123,7 @@ if (isset($_POST['curp']) && isset($_POST['apellidoPaterno']) && isset($_POST['a
             echo "<div class='alert alert-warning mt-4'>El CURP ya esta registrado.</div>";
         } else {
             $sql = "INSERT INTO empleados (curp, apellidoPaterno, apellidoMaterno, nombre, idCargo, horarioEntrada, horarioSalida, createdAt, updatedAt)
-                    VALUES ('$curp', '$apellidoPaterno', '$apellidoMaterno', '$nombre', '$idCargo', '$horarioEntrada', '$horarioSalida', NOW(), NOW())";
+                    VALUES ('$curp', '$apellidoPaterno', '$apellidoMaterno', '$nombre', '$idCargo', '$horarioEntrada', '$horarioSalida', DEFAULT, DEFAULT)";
 
             if (mysqli_query($cnn, $sql)) {
                 echo "<div class='alert alert-success mt-4'>Empleado registrado con exito</div>";
@@ -278,6 +278,3 @@ if (!$result) {
 <script src="scripts/utileria.js"></script>
 </html>
 
-<?php
-mysqli_close($cnn);
-?>

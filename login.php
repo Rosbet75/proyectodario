@@ -151,7 +151,7 @@
                             <br>
                             <button type="submit" class="btn btn-primary">Log in</button>
                         </form>
-                        <label for="">No tienes Contraseña? <a href="registrarusuario.php">Registrarse</a></label>
+                        <label for="">¿No tienes Cuenta? <a href="registrarusuario.php">Registrarse</a></label>
                     </div>
                 </div>
             </div>
